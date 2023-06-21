@@ -18,8 +18,8 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+> For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-230619 这是一个仿海康管理系统
+> 230619 这是一个仿海康管理系统
 
-测试使用小乌龟将代码更新至远程仓库
+> 测试使用小乌龟将代码更新至远程仓库
