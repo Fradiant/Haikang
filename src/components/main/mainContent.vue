@@ -145,6 +145,11 @@ export default {
           name: '设置',
           path: '/Index/config',
           icon: 'el-icon-setting'
+        },
+        {
+          name: '低代码平台',
+          path: '/Index/lowCode',
+          icon: 'el-icon-setting'
         }
       ]
     };
