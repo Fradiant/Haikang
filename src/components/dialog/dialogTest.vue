@@ -1,18 +1,8 @@
 <template>
   <div class="">
-    <el-drawer
-      ref="drawer"
-      v-bind="$attrs"
-      size="500px"
-      :custom-class="'drawerClass'"
-      v-dialogDrag:isDraggable="true"
-      :append-to-body="true"
-      :modal-append-to-body="false"
-      :wrapperClosable="false"
-      @close="cancelForm"
-      direction="rtl"
-      title="我嵌套了 Form !"
-    >
+    <el-drawer ref="drawer" v-bind="$attrs" size="500px" :custom-class="'drawerClass'" v-dialogDrag:isDraggable="true"
+      :append-to-body="true" :modal-append-to-body="false" :wrapperClosable="false" @close="cancelForm" direction="rtl"
+      title="我嵌套了 Form !">
       <section class="demo-drawer__content">
         <el-form :model="form">
           <!-- <el-form-item
@@ -33,29 +23,15 @@
               <img width="100%" :src="dialogImageUrl" alt="" />
             </el-dialog>
           </el-form-item> -->
-          <el-form-item
-            label="上传图片2"
-            :label-width="formLabelWidth"
-            class="el-form-item from_item is-required"
-          >
+          <el-form-item label="上传图片2" :label-width="formLabelWidth" class="el-form-item from_item is-required">
             <div class="" v-if="imgOption.length != 0" class="personImg">
-              <img
-                :height="imgOption[0].height"
-                :width="imgOption[0].width"
-                :src="imgOption[0].pictureBase64Code"
-                @click="selectImg"
-              />
+              <img :height="imgOption[0].height" :width="imgOption[0].width" :src="imgOption[0].pictureBase64Code"
+                @click="selectImg" />
             </div>
             <div class="" v-show="imgOption.length == 0" class="personImg">
               <div class="personImgDiv">
                 <div class="button_func_icon add_black">
-                  <input
-                    type="file"
-                    id="importHidden"
-                    ref="fileUpload"
-                    @change="changeImg"
-                    @click="addImg"
-                  />
+                  <input type="file" id="importHidden" ref="fileUpload" @change="changeImg" @click="addImg" />
                 </div>
               </div>
             </div>
@@ -63,12 +39,8 @@
         </el-form>
         <div class="demo-drawer__footer">
           <el-button @click="cancelForm">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="$refs.drawer.closeDrawer()"
-            :loading="loading"
-            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
-          >
+          <el-button type="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? "提交中 ..." : "确 定"
+          }}</el-button>
         </div>
       </section>
     </el-drawer>
@@ -89,7 +61,7 @@ export default {
     };
   },
   methods: {
-    closeDialog() {},
+    closeDialog() { },
     cancelForm() {
       this.loading = false;
       this.$parent.dialogTestShow = false;
@@ -101,26 +73,6 @@ export default {
     addImg(e) {
       console.log(e);
     },
-    fileToImg(file) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        const reader = new FileReader();
-        reader.onload = e => {
-          img.src = e.target.result;
-        };
-        reader.onerror = e => {
-          reject(e);
-        };
-        reader.readAsDataURL(file);
-        img.onload = () => {
-          resolve(img);
-        };
-        img.onerror = e => {
-          reject(e);
-        };
-      });
-    },
-
     async changeImg(e) {
       const that = this;
       const fileObj = e.target.files[0]; // 赋值文件对象
@@ -153,7 +105,7 @@ export default {
       directionTrunIntoBase64(fileObj);
       document.getElementById("importHidden").value = "";
     },
-    async handleFileObj(fileObj, imgdata) {
+    async handleFileObj(fileObj, imgdata) { // 处理图片，包括base64转blob，图片压缩；
       console.log(fileObj);
       const croppedBlob = this.dataURLtoBlob(imgdata.pictureBase64Code);
       console.log(croppedBlob);
@@ -163,9 +115,6 @@ export default {
       console.log(croppedFile, "原图"); // jpg格式的blob对象
       const compressedImage = await this.compressAccurately(croppedFile, 200); // 图片大小小于200不压缩；
       console.log(compressedImage, "压缩后的");
-      // let A = new window.File([compressedImage], "userPhoto.png", {
-      //   type: compressedImage.type
-      // });
       this.blobToBase64(compressedImage, imgBase64 => {
         this.imgOption = [];
         this.imgOption.push({
@@ -200,7 +149,7 @@ export default {
     async compressAccurately(file, options = {}) {
       console.log(file, options);
       const that = this;
-      return await (async function() {
+      return await (async function () {
         if (!(file instanceof Blob)) {
           throw new Error(
             "compressAccurately(): First arg must be a Blob object or a File object."
@@ -295,28 +244,40 @@ export default {
         }
         console.log(compressedImage, mimeType);
 
-        const finalCompressedImage = await that.l(compressedImage, mimeType);
+        const finalCompressedImage = await that.decodeAndCreateBlob(compressedImage, mimeType);
 
         return finalCompressedImage.size > file.size
           ? file
           : finalCompressedImage;
       })();
     },
-    l(e, t) {
-      return a(this, void 0, void 0, function*() {
-        const A = e.split(",");
-        let n = A[0].match(/:(.*?);/)[1];
-        const r = atob(A[1]);
-        let s = r.length;
-        const o = new Uint8Array(s);
-        for (; s--; ) o[s] = r.charCodeAt(s);
-        return (
-          i(t) && (n = t),
-          new Blob([o], {
-            type: n
-          })
-        );
+    decodeAndCreateBlob(data, fileType) {
+      const that = this;
+      return new Promise((resolve, reject) => {
+        const dataArray = data.split(",");
+        let mimeType = dataArray[0].match(/:(.*?);/)[1];
+        const base64Data = atob(dataArray[1]);
+        let dataLength = base64Data.length;
+        const uint8Array = new Uint8Array(dataLength);
+
+        for (let i = 0; i < dataLength; i++) {
+          uint8Array[i] = base64Data.charCodeAt(i);
+        }
+        debugger;
+        if (fileType && that.isValidMimeType(fileType)) {
+          // if (fileType) {
+          console.log(that.isValidMimeType(fileType))
+          mimeType = fileType;
+        }
+
+        const blob = new Blob([uint8Array], { type: mimeType });
+
+        resolve(blob);
       });
+    },
+
+    isValidMimeType(e) {
+      return ["image/png", "image/jpeg", "image/gif"].some(t => t === e)
     },
     convertToDataURL(image, quality = 0.92, type = "image/jpeg") {
       return new Promise((resolve, reject) => {
@@ -458,6 +419,7 @@ export default {
   top: 0px !important;
   background-color: #f8f9fa !important;
 }
+
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -465,9 +427,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -476,18 +440,21 @@ export default {
   line-height: 148px;
   text-align: center;
 }
+
 .avatar {
   width: 148px;
   height: 148px;
   display: block;
 }
-.avatar-uploader >>> .el-upload {
+
+.avatar-uploader>>>.el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
+
 .personImg {
   height: 194px;
   width: 134px;
@@ -496,19 +463,23 @@ export default {
   vertical-align: top;
   color: #b0b0b0;
 }
+
 .personImg:hover {
   background: #d2e0f1;
   border: 2px dashed #5098eb;
   color: #fff;
 }
+
 .personImgDiv {
   text-align: center;
   margin-top: 64px !important;
 }
+
 .personImg .button_func_icon {
   display: block;
   margin: 0 auto;
 }
+
 .add_black {
   height: 40px;
   width: 40px;

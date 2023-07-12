@@ -1,193 +1,105 @@
 <template>
   <div>
-    <el-dialog
-    custom-class="formClass"
-      width="35%"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :close-on-click-modal="false"
-      @open="onOpen"
-      @close="onClose"
-      title="Dialog Titile"
-    >
+    <el-dialog custom-class="formClass" width="35%" v-bind="$attrs" v-on="$listeners" :close-on-click-modal="false"
+      @open="onOpen" @close="onClose" title="Dialog Titile">
       <el-scrollbar style="height: 400px;">
-          <el-form
-            ref="elForm"
-            :model="formData"
-            :rules="rules"
-            size="medium"
-            label-width="100px"
-          >
-            <el-col :span="22">
-              <el-form-item label="单行文本" prop="field101">
-                <el-input
-                  v-model="formData.field101"
-                  placeholder="请输入单行文本"
-                  clearable
-                  :style="{ width: '100%' }"
-                >
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="多行文本" prop="field103">
-                <el-input
-                  v-model="formData.field103"
-                  type="textarea"
-                  placeholder="请输入多行文本"
-                  :autosize="{ minRows: 4, maxRows: 4 }"
-                  :style="{ width: '100%' }"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="密码" prop="field104">
-                <el-input
-                  v-model="formData.field104"
-                  placeholder="请输入密码"
-                  clearable
-                  show-password
-                  :style="{ width: '100%' }"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="计数器" prop="field105">
-                <el-input-number
-                  v-model="formData.field105"
-                  placeholder="计数器"
-                  :step="1"
-                ></el-input-number>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="编辑器" prop="field106">
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="下拉选择" prop="field107">
-                <el-select
-                :popper-append-to-body="false"
-                  v-model="formData.field107"
-                  placeholder="请选择下拉选择"
-                  clearable
-                  :style="{ width: '100%' }"
-                >
-                  <el-option
-                    v-for="(item, index) in field107Options"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
-                    :disabled="item.disabled"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="级联选择" prop="field108">
-                <el-cascader
-                  v-model="formData.field108"
-                  :options="field108Options"
-                  :props="field108Props"
-                  :style="{ width: '100%' }"
-                  placeholder="请选择级联选择"
-                  clearable
-                ></el-cascader>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="单选框组" prop="field109">
-                <el-radio-group v-model="formData.field109" size="medium">
-                  <el-radio
-                    v-for="(item, index) in field109Options"
-                    :key="index"
-                    :label="item.value"
-                    :disabled="item.disabled"
-                    >{{ item.label }}</el-radio
-                  >
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="多选框组" prop="field110">
-                <el-checkbox-group v-model="formData.field110" size="medium">
-                  <el-checkbox
-                    v-for="(item, index) in field110Options"
-                    :key="index"
-                    :label="item.value"
-                    :disabled="item.disabled"
-                    >{{ item.label }}</el-checkbox
-                  >
-                </el-checkbox-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="滑块" prop="field112" required>
-                <el-slider
-                  :max="100"
-                  :step="1"
-                  v-model="formData.field112"
-                ></el-slider>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="时间范围" prop="field114">
-                <el-time-picker
-                  v-model="formData.field114"
-                  is-range
-                  format="HH:mm:ss"
-                  value-format="HH:mm:ss"
-                  :style="{ width: '100%' }"
-                  start-placeholder="开始时间"
-                  end-placeholder="结束时间"
-                  range-separator="至"
-                  clearable
-                ></el-time-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="日期范围" prop="field116">
-                <el-date-picker
-                  type="daterange"
-                  v-model="formData.field116"
-                  format="yyyy-MM-dd"
-                  value-format="yyyy-MM-dd"
-                  :style="{ width: '100%' }"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  range-separator="至"
-                  clearable
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="评分" prop="field117">
-                <el-rate v-model="formData.field117" :max="5"></el-rate>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="颜色选择" prop="field118" required>
-                <el-color-picker
-                  v-model="formData.field118"
-                  size="medium"
-                ></el-color-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="22">
-              <el-form-item label="上传" prop="field119" required>
-                <el-upload
-                  ref="field119"
-                  :file-list="field119fileList"
-                  :action="field119Action"
-                  :before-upload="field119BeforeUpload"
-                >
-                  <el-button size="small" type="primary" icon="el-icon-upload"
-                    >点击上传</el-button
-                  >
-                </el-upload>
-              </el-form-item>
-            </el-col>
-          </el-form>
+        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
+          <el-col :span="22">
+            <el-form-item label="单行文本" prop="field101">
+              <el-input v-model="formData.field101" placeholder="请输入单行文本" clearable :style="{ width: '100%' }">
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="多行文本" prop="field103">
+              <el-input v-model="formData.field103" type="textarea" placeholder="请输入多行文本"
+                :autosize="{ minRows: 4, maxRows: 4 }" :style="{ width: '100%' }"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="密码" prop="field104">
+              <el-input v-model="formData.field104" placeholder="请输入密码" clearable show-password
+                :style="{ width: '100%' }"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="计数器" prop="field105">
+              <el-input-number v-model="formData.field105" placeholder="计数器" :step="1"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="编辑器" prop="field106">
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="下拉选择" prop="field107">
+              <el-select :popper-append-to-body="false" v-model="formData.field107" placeholder="请选择下拉选择" clearable
+                :style="{ width: '100%' }">
+                <el-option v-for="(item, index) in field107Options" :key="index" :label="item.label" :value="item.value"
+                  :disabled="item.disabled"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="级联选择" prop="field108">
+              <el-cascader v-model="formData.field108" :options="field108Options" :props="field108Props"
+                :style="{ width: '100%' }" placeholder="请选择级联选择" clearable></el-cascader>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="单选框组" prop="field109">
+              <el-radio-group v-model="formData.field109" size="medium">
+                <el-radio v-for="(item, index) in field109Options" :key="index" :label="item.value"
+                  :disabled="item.disabled">{{ item.label }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="多选框组" prop="field110">
+              <el-checkbox-group v-model="formData.field110" size="medium">
+                <el-checkbox v-for="(item, index) in field110Options" :key="index" :label="item.value"
+                  :disabled="item.disabled">{{ item.label }}</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="滑块" prop="field112" required>
+              <el-slider :max="100" :step="1" v-model="formData.field112"></el-slider>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="时间范围" prop="field114">
+              <el-time-picker v-model="formData.field114" is-range format="HH:mm:ss" value-format="HH:mm:ss"
+                :style="{ width: '100%' }" start-placeholder="开始时间" end-placeholder="结束时间" range-separator="至"
+                clearable></el-time-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="日期范围" prop="field116">
+              <el-date-picker type="daterange" v-model="formData.field116" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                :style="{ width: '100%' }" start-placeholder="开始日期" end-placeholder="结束日期" range-separator="至"
+                clearable></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="评分" prop="field117">
+              <el-rate v-model="formData.field117" :max="5"></el-rate>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="颜色选择" prop="field118" required>
+              <el-color-picker v-model="formData.field118" size="medium"></el-color-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="22">
+            <el-form-item label="上传" prop="field119" required>
+              <el-upload ref="field119" :file-list="field119fileList" :action="field119Action"
+                :before-upload="field119BeforeUpload">
+                <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-form>
       </el-scrollbar>
 
       <div slot="footer">
@@ -354,9 +266,9 @@ export default {
   created() {
     this.getField108Options();
   },
-  mounted() {},
+  mounted() { },
   methods: {
-    onOpen() {},
+    onOpen() { },
     onClose() {
       this.$refs["elForm"].resetFields();
     },
@@ -399,20 +311,26 @@ export default {
 .el-upload__tip {
   line-height: 1.2;
 }
+
 /* 隐藏表单横向滚动轴 */
 .el-scrollbar__wrap {
   overflow-x: hidden;
-}/* 用来防止设置overflow属性hidden时下拉框显示不完整 */
-.el-select-dropdown .el-scrollbar .el-scrollbar__wrap{
-  overflow: scroll!important;
-}/* 需要配合 :popper-append-to-body="false"使用，防止滚动时下拉框跟随滚动时显示异常 */
+}
+
+/* 用来防止设置overflow属性hidden时下拉框显示不完整 */
+.el-select-dropdown .el-scrollbar .el-scrollbar__wrap {
+  overflow: scroll !important;
+}
+
+/* 需要配合 :popper-append-to-body="false"使用，防止滚动时下拉框跟随滚动时显示异常 */
 .el-select-dropdown {
-   position: absolute !important;
-   left: 0 !important;
-   top: 40px !important;
- }
- >>> .formClass{
+  position: absolute !important;
+  left: 0 !important;
+  top: 40px !important;
+}
+
+>>>.formClass {
   min-width: 400px;
 
- }
+}
 </style>
