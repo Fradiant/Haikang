@@ -50,4 +50,7 @@ export default {
   width: 100%;
   height: 100%;
 }
+.el-select-dropdown .el-popper .detailDialog_select-popper{
+  z-index:10001 !important;
+}
 </style>

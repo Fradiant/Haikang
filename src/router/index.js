@@ -52,6 +52,11 @@ const routes = [
         path: 'config',
         component: () => import('../components/index/config.vue'),
         name: '设置'
+      },
+      {
+        path: 'lowCode',
+        // component: () => import('../components/LowCode/home.vue'),
+        name: '设置'
       }
     ]
   }

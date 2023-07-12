@@ -18,12 +18,16 @@
       <el-button type="text" @click="dialogUploadShow = true"
         >上传图片</el-button
       >
-
+      <el-button type="text" @click="dialogTestShow = true">海康上传</el-button>
+      <!-- <el-button type="text" @click="dialogTestShow = true">海康上传</el-button> -->
+      <el-button type="text" @click="dialogNormalShow = true">正常上传</el-button>
+      
       <!-- <el-button type="text" @click="dialogVisible = true">点击打开外部引入dialog</el-button> -->
     </div>
     <dialogAll :visible.sync="dialogAll" title="某弹框"></dialogAll>
     <dialogUpload :visible.sync="dialogUploadShow"></dialogUpload>
-    <dialogTest></dialogTest>
+    <dialogTest :visible.sync="dialogTestShow"></dialogTest>
+    <normalUpload :visible.sync="dialogNormalShow"></normalUpload>
     <!-- <dialogForm v-show="dialogForm"> </dialogForm> -->
     <el-dialog
       v-bind="$attrs"
@@ -135,9 +139,10 @@ import dialogForm from "../../dialog/dialogEZ.vue";
 import dialogTest from "../../dialog/dialogTest.vue";
 import dialogAll from "../../dialog/dialogAll.vue";
 import dialogUpload from "../../dialog/dialogUpload.vue";
+import normalUpload from "../../dialog/normalUpload.vue";
 export default {
   name: "user",
-  components: { dialogForm, dialogTest, dialogAll, dialogUpload },
+  components: { dialogForm, dialogTest, dialogAll, dialogUpload, normalUpload },
   data() {
     return {
       dialogVisible: false, // dialog
@@ -145,6 +150,8 @@ export default {
       dialogForm: false,
       dialogAll: false,
       dialogUploadShow: false,
+      dialogTestShow: false,
+      dialogNormalShow: false,
       loading: false,
       form: {
         name: "",

@@ -139,7 +139,7 @@ module.exports = {
     "no-mixed-spaces-and-tabs": "error",
     "one-var": ["error", "never"],
     "operator-linebreak": ["error", "before"],
-    quotes: ["error", "single"],
+    // quotes: ["error", "single"],
     semi: ["error", "always"],
     "semi-spacing": "error",
     "keyword-spacing": "error",

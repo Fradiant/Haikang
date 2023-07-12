@@ -57,7 +57,8 @@ export default {
       photoLoading: 0,
       form: {},
       dialogImageUrl: "",
-      dialogVisible: false
+      dialogVisible: false,
+      imgOption: []
     };
   },
   methods: {
@@ -119,17 +120,22 @@ export default {
     },
 
     // canvas生成的格式为base64，需要进行转化
-    dataURLtoBlob(dataurl) {
-      const arr = dataurl.split(",");
-      const mime = arr[0].match(/:(.*?);/)[1];
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
+    dataURLtoBlob(base64Data) {
+      const parts = base64Data.split(",");
+      const mimeType = parts[0].match(/:(.*?);/)[1];
+      const decodedData = window.atob(parts[1]);
+      const length = decodedData.length;
+      const bytes = new Uint8Array(length);
+
+      for (let i = 0; i < length; i++) {
+        bytes[i] = decodedData.charCodeAt(i);
       }
-      return new Blob([u8arr], { type: mime });
+
+      return new Blob([bytes], {
+        type: mimeType
+      });
     },
+
     saveCroppedImageAndUpload() {
       this.photoLoading = true;
       this.$refs.crop.getCutImgPromise().then(croppedImage => {
@@ -353,17 +359,113 @@ export default {
           console.error(e), (this.photoLoading = !1);
         });
     },
-    dataURLtoBlob(dataURL) {
-      const [, mime] = dataURL.match(/:(.*?);/);
-      const binaryString = window.atob(dataURL.split(",")[1]);
-      const length = binaryString.length;
-      const uint8Array = new Uint8Array(length);
-
-      for (let i = 0; i < length; i++) {
-        uint8Array[i] = binaryString.charCodeAt(i);
+    selectImg() {
+      this.$refs.fileUpload.click();
+    },
+    addImg(e) {
+      console.log(e);
+    },
+    changeImg(e) {
+      console.log(e);
+      const that = this;
+      const fileObj = e.target.files[0];
+      const imgName = fileObj.name;
+      const imgSize = fileObj.size;
+      if (
+        !imgName
+          .substring(imgName.lastIndexOf("."))
+          .toLowerCase()
+          .match(/.jpg/)
+      ) {
+        console.log("yes");
+        document.getElementById("importHidden").value = "";
+        return false;
       }
+      function directionTrunIntoBase64(fileObj) {
+        console.log(fileObj);
+        const r = new FileReader();
+        r.onload = () => {
+          const imgBase64 = r.result;
+          const imgdata = {
+            pictureName: imgName,
+            pictureSize: imgSize,
+            pictureBase64Code: imgBase64.replace("data:image/jpeg;base64,", "")
+          };
+          const image = new Image(100, 100);
+          image.src = "data:image/jpeg;base64," + imgdata.pictureBase64Code;
+          image.addEventListener("load", () => {
+            that.imgOption = [];
+            that.getImgWH(imgdata, fileObj, imgdata1 => {
+              console.log(imgdata1);
+              that.imgOption.push(imgdata1);
+            });
+          });
+        };
+        r.readAsDataURL(fileObj);
+      }
+      directionTrunIntoBase64(fileObj);
+      document.getElementById("importHidden").value = "";
+      console.log(this.imgOption);
+    },
 
-      return new Blob([uint8Array], { type: mime });
+    async getImgWH(data, fileObj, callBack) {
+      const img = await this.fileToImg(fileObj);
+      const { width: originWidth, height: originHeight } = img;
+      const scale = +(originWidth / originHeight).toFixed(2); // 比例取小数点后两位)
+      const targetWidth = 200; // 固定宽
+      const targetHeight = Math.round(200 / scale); // 等比例缩放高
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      let fileSize = fileObj.size;
+      const image = new Image();
+      image.src = "data:image/jpeg;base64," + data.pictureBase64Code;
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      // 创建属性节点
+      context.clearRect(0, 0, targetWidth, targetHeight);
+      // canvas重新绘制图片
+      context.drawImage(image, 0, 0, targetWidth, targetHeight);
+      if (fileSize) {
+        image.src = canvas.toDataURL(fileObj["type"], 0.94);
+      }
+      image.addEventListener("load", () => {
+        let height = "100%";
+        let width = "100%";
+        if (image.naturalWidth / image.naturalHeight >= 1) {
+          height =
+            Math.round((image.naturalHeight / image.naturalWidth) * 100) + "%";
+        }
+        //  else {
+        //   width =
+        //     Math.round((image.naturalWidth / image.naturalHeight) * 100) + "%";
+        // }
+        callBack({
+          pictureName: data.pictureName,
+          pictureBase64Code: image.src,
+          height,
+          width
+        });
+      });
+    },
+    fileToImg(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+        };
+        reader.onerror = function(e) {
+          reject(e);
+        };
+        reader.readAsDataURL(file);
+        img.onload = function() {
+          resolve(img);
+        };
+        img.onerror = function(e) {
+          reject(e);
+        };
+      });
     }
   }
 };
@@ -404,5 +506,32 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+.personImg {
+  height: 194px;
+  width: 134px;
+  display: inline-block;
+  border: 2px dashed #a9a9a9;
+  vertical-align: top;
+  color: #b0b0b0;
+}
+.personImg:hover {
+  background: #d2e0f1;
+  border: 2px dashed #5098eb;
+  color: #fff;
+}
+.personImgDiv {
+  text-align: center;
+  margin-top: 64px !important;
+}
+.personImg .button_func_icon {
+  display: block;
+  margin: 0 auto;
+}
+.add_black {
+  height: 40px;
+  width: 40px;
+  border: 0px;
+  cursor: pointer;
 }
 </style>

@@ -62,11 +62,6 @@
             </el-col>
             <el-col :span="22">
               <el-form-item label="编辑器" prop="field106">
-                <tinymce
-                  v-model="formData.field106"
-                  placeholder="请输入编辑器"
-                  :height="300"
-                ></tinymce>
               </el-form-item>
             </el-col>
             <el-col :span="22">

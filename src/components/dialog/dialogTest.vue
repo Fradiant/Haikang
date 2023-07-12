@@ -1,36 +1,518 @@
 <template>
-  <div>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
+  <div class="">
+    <el-drawer
+      ref="drawer"
+      v-bind="$attrs"
+      size="500px"
+      :custom-class="'drawerClass'"
+      v-dialogDrag:isDraggable="true"
+      :append-to-body="true"
+      :modal-append-to-body="false"
+      :wrapperClosable="false"
+      @close="cancelForm"
+      direction="rtl"
+      title="我嵌套了 Form !"
     >
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+      <section class="demo-drawer__content">
+        <el-form :model="form">
+          <!-- <el-form-item
+            label="上传图片"
+            :label-width="formLabelWidth"
+            class="el-form-item from_item is-required"
+          >
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :on-success="handleAvatarSuccess"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="" />
+            </el-dialog>
+          </el-form-item> -->
+          <el-form-item
+            label="上传图片2"
+            :label-width="formLabelWidth"
+            class="el-form-item from_item is-required"
+          >
+            <div class="" v-if="imgOption.length != 0" class="personImg">
+              <img
+                :height="imgOption[0].height"
+                :width="imgOption[0].width"
+                :src="imgOption[0].pictureBase64Code"
+                @click="selectImg"
+              />
+            </div>
+            <div class="" v-show="imgOption.length == 0" class="personImg">
+              <div class="personImgDiv">
+                <div class="button_func_icon add_black">
+                  <input
+                    type="file"
+                    id="importHidden"
+                    ref="fileUpload"
+                    @change="changeImg"
+                    @click="addImg"
+                  />
+                </div>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+        <div class="demo-drawer__footer">
+          <el-button @click="cancelForm">取 消</el-button>
+          <el-button
+            type="primary"
+            @click="$refs.drawer.closeDrawer()"
+            :loading="loading"
+            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
+          >
+        </div>
+      </section>
+    </el-drawer>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      dialogVisible: false
+      formLabelWidth: "80px",
+      loading: false,
+      photoLoading: 0,
+      form: {},
+      dialogImageUrl: "",
+      dialogVisible: false,
+      imgOption: []
     };
   },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+    closeDialog() {},
+    cancelForm() {
+      this.loading = false;
+      this.$parent.dialogTestShow = false;
+      clearTimeout(this.timer);
+    },
+    selectImg() {
+      this.$refs.fileUpload.click();
+    },
+    addImg(e) {
+      console.log(e);
+    },
+    fileToImg(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = e => {
+          img.src = e.target.result;
+        };
+        reader.onerror = e => {
+          reject(e);
+        };
+        reader.readAsDataURL(file);
+        img.onload = () => {
+          resolve(img);
+        };
+        img.onerror = e => {
+          reject(e);
+        };
+      });
+    },
+
+    async changeImg(e) {
+      const that = this;
+      const fileObj = e.target.files[0]; // 赋值文件对象
+      const imgName = fileObj.name;
+      const imgSize = fileObj.size;
+      if (
+        !imgName
+          .substring(imgName.lastIndexOf("."))
+          .toLowerCase()
+          .match(/.jpg/)
+      ) {
+        document.getElementById("importHidden").value = "";
+        return false;
+      } // 非jpg格式，退出
+      function directionTrunIntoBase64(fileObj) {
+        const r = new FileReader();
+        r.onload = async () => {
+          const imgBase64 = r.result;
+          const imgdata = {
+            pictureName: imgName,
+            pictureSize: imgSize,
+            pictureBase64Code:
+              "data:image/jpeg;base64," +
+              imgBase64.replace("data:image/jpeg;base64,", "")
+          }; // 图片基本信息
+          that.handleFileObj(fileObj, imgdata); //压缩图片
+        };
+        r.readAsDataURL(fileObj);
+      }
+      directionTrunIntoBase64(fileObj);
+      document.getElementById("importHidden").value = "";
+    },
+    async handleFileObj(fileObj, imgdata) {
+      console.log(fileObj);
+      const croppedBlob = this.dataURLtoBlob(imgdata.pictureBase64Code);
+      console.log(croppedBlob);
+      const croppedFile = new File([croppedBlob], "userPhoto.png", {
+        type: croppedBlob.type
+      });
+      console.log(croppedFile, "原图"); // jpg格式的blob对象
+      const compressedImage = await this.compressAccurately(croppedFile, 200); // 图片大小小于200不压缩；
+      console.log(compressedImage, "压缩后的");
+      // let A = new window.File([compressedImage], "userPhoto.png", {
+      //   type: compressedImage.type
+      // });
+      this.blobToBase64(compressedImage, imgBase64 => {
+        this.imgOption = [];
+        this.imgOption.push({
+          pictureName: fileObj.name,
+          pictureBase64Code: imgBase64,
+          height: "100%",
+          width: "100%"
+        });
+      });
+    },
+    blobToBase64(blob, callback) {
+      const fileReader = new FileReader();
+      fileReader.onload = e => {
+        callback(e.target.result);
+      };
+      fileReader.readAsDataURL(blob);
+    },
+
+    // canvas生成的格式为base64，需要进行转化
+    dataURLtoBlob(dataURL) {
+      const [, mimeString, base64Data] = dataURL.match(
+        /data:(.*?);base64,(.*)/
+      );
+      const byteCharacters = atob(base64Data);
+      const byteArrays = [];
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteArrays.push(byteCharacters.charCodeAt(i));
+      }
+      const blob = new Blob([new Uint8Array(byteArrays)], { type: mimeString });
+      return blob;
+    },
+    async compressAccurately(file, options = {}) {
+      console.log(file, options);
+      const that = this;
+      return await (async function() {
+        if (!(file instanceof Blob)) {
+          throw new Error(
+            "compressAccurately(): First arg must be a Blob object or a File object."
+          );
+        }
+        if (typeof options !== "object") {
+          options = Object.assign({ size: options });
+        }
+
+        options.size = Number(options.size);
+        if (Number.isNaN(options.size)) {
+          return file;
+        }
+
+        console.log(options);
+        console.log(file.size);
+        if (1024 * options.size > file.size) {
+          return file;
+        }
+
+        options.accuracy = Number(options.accuracy);
+
+        if (
+          !options.accuracy ||
+          options.accuracy < 0.8 ||
+          options.accuracy > 0.99
+        ) {
+          options.accuracy = 0.95;
+        }
+        console.log(options);
+        const maxFileSize = options.size * (2 - options.accuracy) * 1024;
+        const targetFileSize = 1024 * options.size;
+        const desiredFileSize = options.size * options.accuracy * 1024;
+
+        console.log(file); // 正常
+        const dataURL = await that.readAsDataURL(file);
+        console.log(dataURL); // 正常
+
+        let mimeType = dataURL.split(",")[0].match(/:(.*?);/)[1];
+        let imageType = "image/jpeg";
+        console.log(mimeType);
+
+        if (options.type) {
+          imageType = options.type;
+          mimeType = options.type;
+        }
+
+        const imageData = await that.loadImageFromDataURL(dataURL);
+        const processedImage = await that.transformImage(
+          imageData,
+          Object.assign({}, options)
+        );
+        console.log(processedImage);
+        let compressedImage;
+        let compressionFactor = 0.5;
+        const compressedImages = [null, null];
+
+        for (let i = 1; i <= 7; i++) {
+          compressedImage = await that.convertToDataURL(
+            processedImage,
+            compressionFactor,
+            imageType
+          );
+          const compressedSize = 0.75 * compressedImage.length;
+
+          if (i === 7) {
+            if (
+              maxFileSize < compressedSize ||
+              desiredFileSize > compressedSize
+            ) {
+              compressedImage = [compressedImage, ...compressedImages]
+                .filter(image => image)
+                .sort(
+                  (a, b) =>
+                    Math.abs(0.75 * a.length - targetFileSize) -
+                    Math.abs(0.75 * b.length - targetFileSize)
+                )[0];
+            }
+            break;
+          }
+
+          if (maxFileSize < compressedSize) {
+            compressedImages[1] = compressedImage;
+            compressionFactor -= Math.pow(0.5, i + 1);
+          } else {
+            if (!(desiredFileSize > compressedSize)) {
+              break;
+            }
+            compressedImages[0] = compressedImage;
+            compressionFactor += Math.pow(0.5, i + 1);
+          }
+        }
+        console.log(compressedImage, mimeType);
+
+        const finalCompressedImage = await that.l(compressedImage, mimeType);
+
+        return finalCompressedImage.size > file.size
+          ? file
+          : finalCompressedImage;
+      })();
+    },
+    l(e, t) {
+      return a(this, void 0, void 0, function*() {
+        const A = e.split(",");
+        let n = A[0].match(/:(.*?);/)[1];
+        const r = atob(A[1]);
+        let s = r.length;
+        const o = new Uint8Array(s);
+        for (; s--; ) o[s] = r.charCodeAt(s);
+        return (
+          i(t) && (n = t),
+          new Blob([o], {
+            type: n
+          })
+        );
+      });
+    },
+    convertToDataURL(image, quality = 0.92, type = "image/jpeg") {
+      return new Promise((resolve, reject) => {
+        if (!image || typeof image.toDataURL !== "function") {
+          reject(new Error("Invalid image element"));
+        }
+
+        const dataURL = image.toDataURL(type, quality);
+        resolve(dataURL);
+      });
+    },
+
+    readAsDataURL(file) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onloadend = event => resolve(event.target.result);
+        reader.readAsDataURL(file);
+      });
+    },
+    loadImageFromDataURL(e) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () =>
+          reject(new Error("loadImageFromDataURL(): Failed to load image"));
+        image.src = e;
+      });
+    },
+    transformImage(e, options = {}) {
+      return new Promise((resolve, reject) => {
+        const { width, height, orientation, scale } = Object.assign(
+          {},
+          options
+        );
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        let targetWidth;
+        let targetHeight;
+        if (scale) {
+          const validScale = scale > 0 && scale < 10 ? scale : 1;
+          targetWidth = e.width * validScale;
+          targetHeight = e.height * validScale;
+        } else {
+          targetWidth = width || (height * e.width) / e.height || e.width;
+          targetHeight = height || (width * e.height) / e.width || e.height;
+        }
+
+        switch (orientation) {
+          case 3:
+            canvas.height = targetHeight;
+            canvas.width = targetWidth;
+            context.rotate((180 * Math.PI) / 180);
+            context.drawImage(
+              e,
+              -canvas.width,
+              -canvas.height,
+              canvas.width,
+              canvas.height
+            );
+            break;
+          case 6:
+            canvas.height = targetWidth;
+            canvas.width = targetHeight;
+            context.rotate((90 * Math.PI) / 180);
+            context.drawImage(e, 0, -canvas.width, canvas.height, canvas.width);
+            break;
+          case 8:
+            canvas.height = targetWidth;
+            canvas.width = targetHeight;
+            context.rotate((270 * Math.PI) / 180);
+            context.drawImage(
+              e,
+              -canvas.height,
+              0,
+              canvas.height,
+              canvas.width
+            );
+            break;
+          case 2:
+            canvas.height = targetHeight;
+            canvas.width = targetWidth;
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.drawImage(e, 0, 0, canvas.width, canvas.height);
+            break;
+          case 4:
+            canvas.height = targetHeight;
+            canvas.width = targetWidth;
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.rotate((180 * Math.PI) / 180);
+            context.drawImage(
+              e,
+              -canvas.width,
+              -canvas.height,
+              canvas.width,
+              canvas.height
+            );
+            break;
+          case 5:
+            canvas.height = targetWidth;
+            canvas.width = targetHeight;
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.rotate((90 * Math.PI) / 180);
+            context.drawImage(e, 0, -canvas.width, canvas.height, canvas.width);
+            break;
+          case 7:
+            canvas.height = targetWidth;
+            canvas.width = targetHeight;
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.rotate((270 * Math.PI) / 180);
+            context.drawImage(
+              e,
+              -canvas.height,
+              0,
+              canvas.height,
+              canvas.width
+            );
+            break;
+          default:
+            canvas.height = targetHeight;
+            canvas.width = targetWidth;
+            context.drawImage(e, 0, 0, canvas.width, canvas.height);
+        }
+
+        resolve(canvas);
+      });
     }
   }
 };
 </script>
+
+<style scoped>
+.drawerClass {
+  right: 0px !important;
+  top: 0px !important;
+  background-color: #f8f9fa !important;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 148px;
+  height: 148px;
+  line-height: 148px;
+  text-align: center;
+}
+.avatar {
+  width: 148px;
+  height: 148px;
+  display: block;
+}
+.avatar-uploader >>> .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.personImg {
+  height: 194px;
+  width: 134px;
+  display: inline-block;
+  border: 2px dashed #a9a9a9;
+  vertical-align: top;
+  color: #b0b0b0;
+}
+.personImg:hover {
+  background: #d2e0f1;
+  border: 2px dashed #5098eb;
+  color: #fff;
+}
+.personImgDiv {
+  text-align: center;
+  margin-top: 64px !important;
+}
+.personImg .button_func_icon {
+  display: block;
+  margin: 0 auto;
+}
+.add_black {
+  height: 40px;
+  width: 40px;
+  border: 0px;
+  cursor: pointer;
+}
+</style>
