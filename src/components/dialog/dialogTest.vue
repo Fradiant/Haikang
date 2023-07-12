@@ -102,7 +102,7 @@ export default {
         };
         r.readAsDataURL(fileObj);
       }
-      directionTrunIntoBase64(fileObj);
+      directionTrunIntoBase64(fileObj); //文件对象转换为 base64 编码
       document.getElementById("importHidden").value = "";
     },
     async handleFileObj(fileObj, imgdata) { // 处理图片，包括base64转blob，图片压缩；
@@ -154,10 +154,10 @@ export default {
           throw new Error(
             "compressAccurately(): First arg must be a Blob object or a File object."
           );
-        }
+        } // 检查 file 是否为 Blob 对象或 File 对象
         if (typeof options !== "object") {
           options = Object.assign({ size: options });
-        }
+        } // option如果不是对象，则将其转为具有size属性的对象
 
         options.size = Number(options.size);
         if (Number.isNaN(options.size)) {
@@ -180,6 +180,8 @@ export default {
           options.accuracy = 0.95;
         }
         console.log(options);
+        // 分别计算文件最大大小、目标文件大小和期望文件大小
+        // 以300kb为例：分别是15360、327000、291840 【15、300、285】
         const maxFileSize = options.size * (2 - options.accuracy) * 1024;
         const targetFileSize = 1024 * options.size;
         const desiredFileSize = options.size * options.accuracy * 1024;
@@ -188,7 +190,7 @@ export default {
         const dataURL = await that.readAsDataURL(file);
         console.log(dataURL); // 正常
 
-        let mimeType = dataURL.split(",")[0].match(/:(.*?);/)[1];
+        let mimeType = dataURL.split(",")[0].match(/:(.*?);/)[1]; // 通过拆分匹配字符串、获取文件类型
         let imageType = "image/jpeg";
         console.log(mimeType);
 
@@ -201,19 +203,19 @@ export default {
         const processedImage = await that.transformImage(
           imageData,
           Object.assign({}, options)
-        );
+        );  // 根据条件返回对应画布
         console.log(processedImage);
         let compressedImage;
         let compressionFactor = 0.5;
         const compressedImages = [null, null];
-
+        // 在第 7 次迭代过程中，检查压缩后的大小是否符合最大文件大小和期望文件大小的要求。如果不符合，则从 compressedImages 数组中选择最接近目标文件大小的压缩图像。
         for (let i = 1; i <= 7; i++) {
           compressedImage = await that.convertToDataURL(
             processedImage,
             compressionFactor,
             imageType
           );
-          const compressedSize = 0.75 * compressedImage.length;
+          const compressedSize = 0.75 * compressedImage.length; // 保存每次压缩生成的图像数据
 
           if (i === 7) {
             if (
@@ -225,7 +227,7 @@ export default {
                 .sort(
                   (a, b) =>
                     Math.abs(0.75 * a.length - targetFileSize) -
-                    Math.abs(0.75 * b.length - targetFileSize)
+                    Math.abs(0.75 * b.length - targetFileSize)  // 内置函数，返回绝对值
                 )[0];
             }
             break;
@@ -263,7 +265,6 @@ export default {
         for (let i = 0; i < dataLength; i++) {
           uint8Array[i] = base64Data.charCodeAt(i);
         }
-        debugger;
         if (fileType && that.isValidMimeType(fileType)) {
           // if (fileType) {
           console.log(that.isValidMimeType(fileType))
@@ -317,7 +318,7 @@ export default {
 
         let targetWidth;
         let targetHeight;
-        if (scale) {
+        if (scale) { // 缩放比例
           const validScale = scale > 0 && scale < 10 ? scale : 1;
           targetWidth = e.width * validScale;
           targetHeight = e.height * validScale;
