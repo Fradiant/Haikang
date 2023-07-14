@@ -1,37 +1,43 @@
 <template>
   <div class="">
-    <el-drawer ref="drawer" v-bind="$attrs" size="500px" :custom-class="'drawerClass'" v-dialogDrag:isDraggable="true"
-      :append-to-body="true" :modal-append-to-body="false" :wrapperClosable="false" @close="cancelForm" direction="rtl"
-      title="我嵌套了 Form !">
+    <el-drawer
+      ref="drawer"
+      v-bind="$attrs"
+      size="500px"
+      :custom-class="'drawerClass'"
+      v-dialogDrag:isDraggable="true"
+      :append-to-body="true"
+      :modal-append-to-body="false"
+      :wrapperClosable="false"
+      @close="cancelForm"
+      direction="rtl"
+      title="我嵌套了 Form !"
+    >
       <section class="demo-drawer__content">
         <el-form :model="form">
-          <!-- <el-form-item
+          <el-form-item
             label="上传图片"
             :label-width="formLabelWidth"
             class="el-form-item from_item is-required"
           >
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-              :on-success="handleAvatarSuccess"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="" />
-            </el-dialog>
-          </el-form-item> -->
-          <el-form-item label="上传图片2" :label-width="formLabelWidth" class="el-form-item from_item is-required">
-            <div class="" v-if="imgOption.length != 0" class="personImg">
-              <img :height="imgOption[0].height" :width="imgOption[0].width" :src="imgOption[0].pictureBase64Code"
-                @click="selectImg" />
+            <div v-if="imgOption.length != 0" class="personImg">
+              <img
+                :height="imgOption[0].height"
+                :width="imgOption[0].width"
+                :src="imgOption[0].pictureBase64Code"
+                @click="selectImg"
+              />
             </div>
-            <div class="" v-show="imgOption.length == 0" class="personImg">
+            <div v-show="imgOption.length == 0" class="personImg">
               <div class="personImgDiv">
                 <div class="button_func_icon add_black">
-                  <input type="file" id="importHidden" ref="fileUpload" @change="changeImg" @click="addImg" />
+                  <input
+                    type="file"
+                    id="importHidden"
+                    ref="fileUpload"
+                    @change="changeImg"
+                    @click="addImg"
+                  />
                 </div>
               </div>
             </div>
@@ -39,8 +45,12 @@
         </el-form>
         <div class="demo-drawer__footer">
           <el-button @click="cancelForm">取 消</el-button>
-          <el-button type="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? "提交中 ..." : "确 定"
-          }}</el-button>
+          <el-button
+            type="primary"
+            @click="$refs.drawer.closeDrawer()"
+            :loading="loading"
+            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
+          >
         </div>
       </section>
     </el-drawer>
@@ -61,7 +71,7 @@ export default {
     };
   },
   methods: {
-    closeDialog() { },
+    closeDialog() {},
     cancelForm() {
       this.loading = false;
       this.$parent.dialogTestShow = false;
@@ -98,14 +108,15 @@ export default {
               "data:image/jpeg;base64," +
               imgBase64.replace("data:image/jpeg;base64,", "")
           }; // 图片基本信息
-          that.handleFileObj(fileObj, imgdata); //压缩图片
+          that.handleFileObj(fileObj, imgdata); // 压缩图片
         };
         r.readAsDataURL(fileObj);
       }
-      directionTrunIntoBase64(fileObj); //文件对象转换为 base64 编码
+      directionTrunIntoBase64(fileObj); // 文件对象转换为 base64 编码
       document.getElementById("importHidden").value = "";
     },
-    async handleFileObj(fileObj, imgdata) { // 处理图片，包括base64转blob，图片压缩；
+    async handleFileObj(fileObj, imgdata) {
+      // 处理图片，包括base64转blob，图片压缩；
       console.log(fileObj);
       const croppedBlob = this.dataURLtoBlob(imgdata.pictureBase64Code);
       console.log(croppedBlob);
@@ -149,7 +160,7 @@ export default {
     async compressAccurately(file, options = {}) {
       console.log(file, options);
       const that = this;
-      return await (async function () {
+      return await (async () => {
         if (!(file instanceof Blob)) {
           throw new Error(
             "compressAccurately(): First arg must be a Blob object or a File object."
@@ -203,7 +214,7 @@ export default {
         const processedImage = await that.transformImage(
           imageData,
           Object.assign({}, options)
-        );  // 根据条件返回对应画布
+        ); // 根据条件返回对应画布
         console.log(processedImage);
         let compressedImage;
         let compressionFactor = 0.5;
@@ -227,7 +238,7 @@ export default {
                 .sort(
                   (a, b) =>
                     Math.abs(0.75 * a.length - targetFileSize) -
-                    Math.abs(0.75 * b.length - targetFileSize)  // 内置函数，返回绝对值
+                    Math.abs(0.75 * b.length - targetFileSize) // 内置函数，返回绝对值
                 )[0];
             }
             break;
@@ -246,7 +257,10 @@ export default {
         }
         console.log(compressedImage, mimeType);
 
-        const finalCompressedImage = await that.decodeAndCreateBlob(compressedImage, mimeType);
+        const finalCompressedImage = await that.decodeAndCreateBlob(
+          compressedImage,
+          mimeType
+        );
 
         return finalCompressedImage.size > file.size
           ? file
@@ -267,7 +281,7 @@ export default {
         }
         if (fileType && that.isValidMimeType(fileType)) {
           // if (fileType) {
-          console.log(that.isValidMimeType(fileType))
+          console.log(that.isValidMimeType(fileType));
           mimeType = fileType;
         }
 
@@ -278,7 +292,7 @@ export default {
     },
 
     isValidMimeType(e) {
-      return ["image/png", "image/jpeg", "image/gif"].some(t => t === e)
+      return ["image/png", "image/jpeg", "image/gif"].some(t => t === e);
     },
     convertToDataURL(image, quality = 0.92, type = "image/jpeg") {
       return new Promise((resolve, reject) => {
@@ -318,7 +332,8 @@ export default {
 
         let targetWidth;
         let targetHeight;
-        if (scale) { // 缩放比例
+        if (scale) {
+          // 缩放比例
           const validScale = scale > 0 && scale < 10 ? scale : 1;
           targetWidth = e.width * validScale;
           targetHeight = e.height * validScale;
@@ -448,7 +463,7 @@ export default {
   display: block;
 }
 
-.avatar-uploader>>>.el-upload {
+.avatar-uploader >>> .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;

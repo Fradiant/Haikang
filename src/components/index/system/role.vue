@@ -1,95 +1,121 @@
 <template>
-    <div class="teamInfoPages">
-      <!-- <el-empty style="flex: 1" description="暂无数据"></el-empty> -->
-      <div class="item-inline" style="white-space: nowrap;">
-        <span>搜索：</span>
-        <div class="" style="width:300px;">
-          <el-input type="text" v-model="searchContent" v-emoji>
-            <el-button
-              slot="append"
-              icon="el-icon-search"
-              @click="onClick(searchContent)"
-            ></el-button>
-
-          </el-input>
+  <div class="teamInfoPages">
+    <!-- <el-empty style="flex: 1" description="暂无数据"></el-empty> -->
+    <div class="item-inline" style="white-space: nowrap;">
+      <span>搜索：</span>
+      <div class="" style="width:300px;">
+        <el-input type="text" v-model="searchContent" v-emoji>
           <el-button
-              slot="append"
-              v-copy="searchContent"
-            >复制内容</el-button>
-        </div>
+            slot="append"
+            icon="el-icon-search"
+            @click="onClick(searchContent)"
+          ></el-button>
+        </el-input>
+        <el-button slot="append" v-copy="searchContent">复制内容</el-button>
       </div>
-      <div class="item-inline">
-        <span>选择文件：</span>
-        <div class="" style="width:300px;">
-          <input type="file" @input="changeFile" accept=".xls"  >
-        </div>
-      </div>
-      <div class="item-inline">
-        <span>路由：</span>
-        <el-button @click="$message.warning($route.path)">本页路由</el-button>
-        <el-button @click="route">路由对象</el-button>
-        <el-button @click="routeVuex">Vuex路由对象</el-button>
-      </div>
-      <div class="item-inline">
-        <span>路由跳转：</span>
-        <el-button @click="routePush">路由跳转</el-button>
-      </div>
-      <div class="item-inline">
-        <span>图片转base64</span>
-        <el-input v-model="imgSrc" style="width: 235px;" v-emoji></el-input>
-        <el-button @click="changeBase64">转换</el-button>
-      </div>
-
-      <el-tree ref="tree" :data="data" :props="defaultProps" style="width: 300px;height: 300px;"></el-tree>
     </div>
+    <div class="item-inline">
+      <span>选择文件：</span>
+      <div class="" style="width:300px;">
+        <input type="file" @input="changeFile" accept=".xls" />
+      </div>
+    </div>
+    <div class="item-inline">
+      <span>路由：</span>
+      <el-button @click="$message.warning($route.path)">本页路由</el-button>
+      <el-button @click="route">路由对象</el-button>
+      <el-button @click="routeVuex">Vuex路由对象</el-button>
+    </div>
+    <div class="item-inline">
+      <span>路由跳转：</span>
+      <el-button @click="routePush">路由跳转</el-button>
+    </div>
+    <div class="item-inline">
+      <span>低代码平台跳转：</span>
+      <el-button @click="routePush2">路由跳转</el-button>
+    </div>
+    <div class="item-inline">
+      <span>图片转base64</span>
+      <el-input v-model="imgSrc" style="width: 235px;" v-emoji></el-input>
+      <el-button @click="changeBase64">转换</el-button>
+    </div>
+
+    <el-tree
+      ref="tree"
+      :data="data"
+      :props="defaultProps"
+      style="width: 300px;height: 300px;"
+    ></el-tree>
+  </div>
 </template>
 <script>
 export default {
-  name: 'role',
+  name: "role",
   data() {
     return {
-      searchContent: '123',
-      imgSrc: '',
-      data: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
+      searchContent: "123",
+      imgSrc: "",
+      data: [
+        {
+          label: "一级 1",
+          children: [
+            {
+              label: "二级 1-1",
+              children: [
+                {
+                  label: "三级 1-1-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: "一级 2",
+          children: [
+            {
+              label: "二级 2-1",
+              children: [
+                {
+                  label: "三级 2-1-1"
+                }
+              ]
+            },
+            {
+              label: "二级 2-2",
+              children: [
+                {
+                  label: "三级 2-2-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: "一级 3",
+          children: [
+            {
+              label: "二级 3-1",
+              children: [
+                {
+                  label: "三级 3-1-1"
+                }
+              ]
+            },
+            {
+              label: "二级 3-2",
+              children: [
+                {
+                  label: "三级 3-2-1"
+                }
+              ]
+            }
+          ]
+        }
+      ],
       defaultProps: {
-        children: 'children',
-        label: 'label'
+        children: "children",
+        label: "label"
       }
-
     };
   },
   methods: {
@@ -98,7 +124,7 @@ export default {
     },
     onClick(msg) {
       this.$message.warning(`搜索内容：${msg}`);
-      const element = document.getElementsByClassName('el-tree');
+      const element = document.getElementsByClassName("el-tree");
       console.log(element);
       console.log(this.$refs.tree);
     },
@@ -109,7 +135,11 @@ export default {
       console.log(this.$store.state.routeHistory);
     },
     routePush() {
-      const path = '/Index/system/role/add';
+      const path = "/Index/system/role/add";
+      this.$router.push({ path });
+    },
+    routePush2() {
+      const path = "/lowCode";
       this.$router.push({ path });
     },
     // changeBase64() {
@@ -138,16 +168,16 @@ export default {
       let imgUrl = this.imgSrc;
       window.URL = window.URL || window.webkitURL;
       let xhr = new XMLHttpRequest();
-      xhr.open('get', imgUrl, true);
-      xhr.responseType = 'blob';
-      xhr.onload = function () {
+      xhr.open("get", imgUrl, true);
+      xhr.responseType = "blob";
+      xhr.onload = function() {
         if (this.status === 200) {
           // 得到一个blob对象
           let blob = this.response;
-          console.log('blob', blob);
+          console.log("blob", blob);
           // 至关重要
           let oFileReader = new FileReader();
-          oFileReader.onloadend = function (e) {
+          oFileReader.onloadend = function(e) {
             // 此处拿到的已经是base64的图片了,可以赋值做相应的处理
             console.log(e.target.result);
           };
@@ -160,7 +190,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .teamInfoPages {
   box-sizing: border-box;
   width: 100%;

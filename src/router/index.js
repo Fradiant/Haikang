@@ -19,6 +19,11 @@ const routes = [
     component: () => import('@/components/main/mainHeader.vue')
   },
   {
+    path: '/lowCode',
+    component: () => import('../components/LowCode/index.vue'),
+    name: '低代码'
+  },
+  {
     path: '/Index',
     name: 'Index',
     component: () => import('@/components/main/Index.vue'),
@@ -53,10 +58,11 @@ const routes = [
         component: () => import('../components/index/config.vue'),
         name: '设置'
       },
+
       {
-        path: 'lowCode',
-        // component: () => import('../components/LowCode/home.vue'),
-        name: '设置'
+        path: 'lowCode2',
+        component: () => import('../components/LowCode/index2.vue'),
+        name: '低代码2'
       }
     ]
   }

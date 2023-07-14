@@ -67,6 +67,7 @@ module.exports = {
     // 不允许可达代码后return，throw，continue，和break语句
     "no-unreachable": "error",
     "use-isnan": "error",
+    "no-console": "off",
     "valid-typeof": "error",
     curly: ["error", "all"],
     eqeqeq: ["error", "allow-null"],

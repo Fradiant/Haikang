@@ -56,7 +56,7 @@
         <transition-group name="fade" mode="out-in" appear>
           <template v-if="isRefresh">
             <el-breadcrumb
-            key="1"
+              key="1"
               separator="/"
               class="el-breadcrumb app-breadcrumb breadcrumb-container"
               v-if="pathList.length == 1"
@@ -111,55 +111,64 @@
 </template>
 <script>
 export default {
-  name: 'mainContent',
+  name: "mainContent",
   data() {
     return {
       isCollapse: false,
-      transitionName: '',
+      transitionName: "",
       isRefresh: true,
       menuData: [
         {
-          name: '系统设置',
-          icon: 'el-icon-menu',
+          name: "系统设置",
+          icon: "el-icon-menu",
           children: [
             {
-              name: '角色管理',
-              path: '/Index/system/role'
+              name: "角色管理",
+              path: "/Index/system/role"
             },
             {
-              name: '权限管理',
-              path: '/Index/system/authority'
+              name: "权限管理",
+              path: "/Index/system/authority"
             },
             {
-              name: '用户管理',
-              path: '/Index/system/user'
+              name: "用户管理",
+              path: "/Index/system/user"
             }
           ]
         },
         {
-          name: '人员管理',
-          path: '/Index/person',
-          icon: 'el-icon-document'
+          name: "人员管理",
+          path: "/Index/person",
+          icon: "el-icon-document"
         },
         {
-          name: '设置',
-          path: '/Index/config',
-          icon: 'el-icon-setting'
+          name: "设置",
+          path: "/Index/config",
+          icon: "el-icon-setting"
         },
         {
-          name: '低代码平台',
-          path: '/Index/lowCode',
-          icon: 'el-icon-setting'
+          name: "低代码平台",
+          icon: "el-icon-setting",
+          children: [
+            // {
+            //   name: "低代码1",
+            //   path: "/Index/lowCode"
+            // },
+            {
+              name: "低代码2",
+              path: "/Index/lowCode2"
+            }
+          ]
         }
       ]
     };
   },
   computed: {
-    pathList: function () {
+    pathList: function() {
       let List = this.$store.state.routeHistory;
       if (
-        List[1].path.indexOf(List[0].path) !== -1
-        && List[0].name !== 'Index'
+        List[1].path.indexOf(List[0].path) !== -1 &&
+        List[0].name !== "Index"
       ) {
         console.log(List);
         return List;
@@ -171,7 +180,7 @@ export default {
   },
   watch: {
     isCollapse(newVal) {
-      this.$emit('input-value-update', newVal);
+      this.$emit("input-value-update", newVal);
     },
     // 使用watch 监听$router的变化
     $route(to, from) {
@@ -183,9 +192,9 @@ export default {
       // 如果to索引大于from索引,判断为前进状态,反之则为后退状态
       if (to.meta.index > from.meta.index) {
         // 设置动画名称
-        this.transitionName = 'slide-left';
+        this.transitionName = "slide-left";
       } else {
-        this.transitionName = 'slide-right';
+        this.transitionName = "slide-right";
       }
     }
   },
