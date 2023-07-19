@@ -7,12 +7,12 @@
     >
       <img
         v-show="isCollapse"
-        src="	https://www.hiklink.cn/tenant/img/portraitlogo.c463e1d2.png"
+        src="../../assets/logo/portraitlogo2.png"
         class="iconLogo "
       />
       <img
         v-show="!isCollapse"
-        src="	https://www.hiklink.cn/tenant/img/haikanglogo.faef4d35.png"
+        src="../../assets/logo/haikanglogo1.png"
         class="logoHk header-left__width"
       />
     </div>
@@ -59,7 +59,7 @@
               </div>
             </div>
             <img
-              src="https://www.hiklink.cn/tenant/static/images/jiantou.png"
+              src="../../assets/logo/jiantou.png"
               alt=""
               class="icon-jiantou1"
             />
@@ -69,7 +69,7 @@
         <section class="info default-active-item" @click="person">
           <img
             class="userHeader"
-            src="https://file.hikvisionmall.com/prod/image/b3f1fe47f22c4dc5b0ff6be54ed16b46.png?x-oss-process=image/resize,m_fill,w_32,h_32"
+            src="../../assets/logo/人员头像.png"
             alt=""
           />
           <p class="ellipsisName">HikMall_94114363</p>
