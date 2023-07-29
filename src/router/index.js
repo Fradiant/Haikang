@@ -19,11 +19,6 @@ const routes = [
     component: () => import("@/components/main/mainHeader.vue")
   },
   {
-    path: "/lowCode",
-    component: () => import("../components/LowCode/index.vue"),
-    name: "低代码"
-  },
-  {
     path: "/Index",
     name: "Index",
     meta: { auth: true },
@@ -32,7 +27,7 @@ const routes = [
       {
         path: "system/role",
         component: () => import("../components/index/system/role.vue"),
-        name: "角色管理"
+        name: "表单管理"
       },
       {
         path: "system/role/add",
@@ -42,24 +37,28 @@ const routes = [
       {
         path: "system/authority",
         component: () => import("../components/index/system/authority.vue"),
-        name: "权限管理"
+        name: "动画演示"
       },
       {
         path: "system/user",
         component: () => import("../components/index/system/user.vue"),
-        name: "用户管理"
+        name: "弹框管理"
       },
       {
         path: "person",
         component: () => import("../components/index/person.vue"),
-        name: "人员管理"
+        name: "滚动条"
       },
       {
         path: "config",
         component: () => import("../components/index/config.vue"),
         name: "设置"
       },
-
+      {
+        path: "lowCode",
+        component: () => import("../components/LowCode/index.vue"),
+        name: "低代码"
+      },
       {
         path: "lowCode2",
         component: () => import("../components/LowCode/index2.vue"),

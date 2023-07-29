@@ -31,7 +31,7 @@
       <el-button @click="routePush">路由跳转</el-button>
     </div>
     <div class="item-inline">
-      <span>低代码平台跳转：</span>
+      <span>测试应用跳转：</span>
       <el-button @click="routePush2">路由跳转</el-button>
     </div>
     <div class="item-inline">

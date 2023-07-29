@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <div class="teamInfoPages">
-      <h1>权限管理</h1>
+      <h1>动画演示</h1>
       <el-button @click="fun">退出</el-button>
     </div>
   </section>

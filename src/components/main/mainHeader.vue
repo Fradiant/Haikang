@@ -7,19 +7,19 @@
     >
       <img
         v-show="isCollapse"
-        src="../../assets/logo/portraitlogo2.png"
+        src="../../assets/logo/logo2.png"
         class="iconLogo "
       />
       <img
         v-show="!isCollapse"
-        src="../../assets/logo/haikanglogo1.png"
+        src="../../assets/logo/logo1.png"
         class="logoHk header-left__width"
       />
     </div>
     <div class="header-right">
       <div class="nav-left" @click="onChange">
         <nav class="nav-item">
-          <p>工作台</p>
+          <p>首页</p>
         </nav>
       </div>
       <div class="right-menu">
@@ -72,7 +72,7 @@
             src="../../assets/logo/人员头像.png"
             alt=""
           />
-          <p class="ellipsisName">HikMall_94114363</p>
+          <p class="ellipsisName">个人管理</p>
           <svg
             class="icon icon-jiantou"
             :class="{ 'icon-jiantou-active': !isPerson }"
