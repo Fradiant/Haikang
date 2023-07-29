@@ -11,7 +11,8 @@
           海康互联
         </h3>
         <el-form-item prop="username">
-          <el-input v-emoji
+          <el-input
+            v-emoji
             type="text"
             v-model="loginForm.username"
             placeholder="亲，请输入用户名"
@@ -19,7 +20,8 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-emoji
+          <el-input
+            v-emoji
             type="password"
             v-model="loginForm.password"
             placeholder="亲，请输入密码"
@@ -28,7 +30,7 @@
         </el-form-item>
         <el-form-item prop="code">
           <el-input
-          v-emoji
+            v-emoji
             type="text"
             auto-complete="false"
             v-model="loginForm.code"
@@ -51,26 +53,26 @@
 
 <script>
 export default {
-  name: 'login',
+  name: "login",
   data() {
     return {
-      captchaUrl: '',
+      captchaUrl: "",
       loginForm: {
-        username: 'admin',
-        password: 'ssssss',
-        code: ''
+        username: "admin",
+        password: "123456",
+        code: ""
       },
       checked: true,
       rules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 5, max: 14, message: '长度在 5 到 14 个字符', trigger: 'blur' }
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 5, max: 14, message: "长度在 5 到 14 个字符", trigger: "blur" }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, message: '密码长度要大于6', trigger: 'blur' }
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, message: "密码长度要大于6", trigger: "blur" }
         ],
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       }
     };
   },
@@ -78,13 +80,20 @@ export default {
     submitLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          //   alert("提交成功");
-          this.$message.success('登录成功');
-          const path = '/Index';
-          this.$router.push({ path });
-          this.$store.commit('changeMain', true);
+          if (
+            this.loginForm.username === "admin" &&
+            this.loginForm.password === "123456"
+          ) {
+            const path = "/Index";
+            this.$message.success("登录成功");
+            this.$router.push({ path });
+            this.$store.commit("changeMain", true);
+            this.$store.commit("setToekn", true); // 模仿获取token，禁止无token登录
+          } else {
+            this.$message.error("登录出错请重新输入");
+          }
         } else {
-          this.$message.error('登录出错请重新输入');
+          this.$message.error("登录出错请重新输入");
           return false;
         }
       });
@@ -94,11 +103,11 @@ export default {
         if (!valid) {
           return;
         }
-        const pwdMd5
-          = this.ms5.hex(this.formData.password)
-          + this.ms5.hex(this.formData.password).splice(0, 8);
+        const pwdMd5 =
+          this.ms5.hex(this.formData.password) +
+          this.ms5.hex(this.formData.password).splice(0, 8);
         const slotMd5 = this.md5.hex(pwdMd5);
-        this.btnText = '登陆中，请稍后';
+        this.btnText = "登陆中，请稍后";
         return new Promise(resolve => {
           const params = {
             url: this.ComScript.OPENAPI.Accout.login,
@@ -106,8 +115,8 @@ export default {
             dataMap: {
               userName: this.formData.loginName,
               password: slotMd5,
-              clientId: '',
-              clientName: 'Sass'
+              clientId: "",
+              clientName: "Sass"
             },
             callback: response => {
               if (response.code === 200) {
@@ -118,13 +127,13 @@ export default {
               resolve();
             }
           };
-          this.$store.dispatch('OPENAPI_PostCfgTool', params);
+          this.$store.dispatch("OPENAPI_PostCfgTool", params);
         });
       });
     },
     loginAction(response) {
-      sessionStorage.setItem('auth', JSON.stringify(response.data));
-      this.$store.commit('setAuth', response.data);
+      sessionStorage.setItem("auth", JSON.stringify(response.data));
+      this.$store.commit("setAuth", response.data);
       this.getAccoutInfo();
     },
     getAccoutInfo() {
@@ -135,21 +144,21 @@ export default {
           callback: async response => {
             if (response.code === 200) {
               const userData = response.data;
-              self.$store.commit('setUserName', this.formData.loginName);
+              self.$store.commit("setUserName", this.formData.loginName);
               if (!userData.phone) {
-                sessionStorage.removeItem('phone');
+                sessionStorage.removeItem("phone");
               } else {
-                self.$store.commit('setUserType', userData.userType);
-                self.$store.commit('setUserPhone', userData.phone);
-                sessionStorage.setItem('phone', userData.phone);
-                const path = '/Index';
-                this.$router.push({path});
+                self.$store.commit("setUserType", userData.userType);
+                self.$store.commit("setUserPhone", userData.phone);
+                sessionStorage.setItem("phone", userData.phone);
+                const path = "/Index";
+                this.$router.push({ path });
               }
             }
             resolve();
           }
         };
-        this.$store.dispatch('OPENAPI_PostCfgTool', params);
+        this.$store.dispatch("OPENAPI_PostCfgTool", params);
       });
     }
   }
