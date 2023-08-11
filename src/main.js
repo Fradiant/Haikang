@@ -4,6 +4,7 @@ import router from "./router";
 import axios from "axios";
 import ElementUI from "element-ui";
 import resetMessage from "./utils/message"; // 重写message弹提示
+import "../static/font/iconfont.css"
 import "element-ui/lib/theme-chalk/index.css";
 import "./assets/css/global.css";
 import "./assets/css/element.css";

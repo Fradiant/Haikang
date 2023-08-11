@@ -63,6 +63,11 @@ const routes = [
         path: "lowCode2",
         component: () => import("../components/LowCode/index2.vue"),
         name: "低代码2"
+      },
+      {
+        path: "element",
+        component: () => import("../components/element/element.vue"),
+        name: "组件测试"
       }
     ]
   }
