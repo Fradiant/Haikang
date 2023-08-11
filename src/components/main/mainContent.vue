@@ -151,6 +151,16 @@ export default {
           ]
         },
         {
+          name: "组件测试",
+          icon: "el-icon-setting",
+          children: [
+            {
+              name: "组件测试1",
+              path: "/Index/element"
+            },
+          ]
+        },
+        {
           name: "滚动条",
           path: "/Index/person",
           icon: "el-icon-document"

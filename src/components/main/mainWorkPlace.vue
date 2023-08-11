@@ -61,9 +61,9 @@ export default {
           title: "低代码2"
         },
         {
-          to: "/Index/lowCode2",
+          to: "/Index/element",
           imgUrl: require("../../assets/logo/6.png"),
-          title: "低代码2"
+          title: "组件测试"
         }
       ],
       otherLinkList: [

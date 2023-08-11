@@ -83,14 +83,7 @@ export default {
 };
 </script>
 <style scoped>
-.teamInfoPages {
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-  background: #fff;
-  padding: 24px 16px 16px 24px;
-  border-radius: 4px;
-}
+
 .teamInfoPages >>> .el-scrollbar__wrap {
   overflow-x: hidden;
 }
