@@ -16,6 +16,7 @@
     "axios": "^1.4.0",
     "element-ui": "^2.15.13",
     "lint": "^0.8.19",
+    "sortablejs": "^1.15.0",
     "vform-builds": "^2.2.9",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
