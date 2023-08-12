@@ -15,14 +15,21 @@
       <div class="" style="height: 10px;"></div>
       <!-- transition标签 -->
       <div class="item-inline">
-        <el-button @click="bol = !bol"  size="small" style="margin-right:20px;">隐藏/显示</el-button>
+        <el-button @click="bol = !bol" size="small" style="margin-right:20px;"
+          >隐藏/显示</el-button
+        >
         <transition name="moveCartoon" appear>
           <h1 v-show="bol">组件动画效果</h1>
         </transition>
       </div>
       <!-- transition-group标签 -->
       <div class="item-inline">
-        <el-button @click="isEditing = !isEditing"  size="small" style="margin-right:20px;">transition-group切换</el-button>
+        <el-button
+          @click="isEditing = !isEditing"
+          size="small"
+          style="margin-right:20px;"
+          >transition-group切换</el-button
+        >
         <transition-group name="fade" appear>
           <h1 class="group" v-if="isEditing" key="save">Save</h1>
           <h1 class="group" v-if="!isEditing" key="edit">Edit</h1>
@@ -43,20 +50,33 @@
           >
         </transition-group>
       </div>
+      <div class="">
+        <!-- Animatin动画基础 -->
+        <!-- 基础用法 -->
+        <!-- <div class="basicAnimation"></div> -->
+        <!-- 绕圈动画 -->
+        <!-- <div class="circleAnimation"></div> -->
+        <!-- steps动画 -->
+        <!-- <div class="stepsAnimation"></div> -->
+        <!-- 打字机动画 -->
+        <!-- <div class="fontAnimation">这是一台打字机</div> -->
+        <!-- 简写属性的运用 -->
+        <div class="simpleAnimation"></div>
+      </div>
     </el-scrollbar>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'authority',
+  name: "authority",
   data() {
     return {
       list: [1, 2, 3, 4],
       bol: true,
       isEditing: true,
       show: true,
-      items: ['A', 'B', 'C', 'D', 'E']
+      items: ["A", "B", "C", "D", "E"]
     };
   },
   methods: {}
@@ -201,7 +221,8 @@ export default {
 /* transition-group标签 */
 
 /* transition-group标签 */
-.slide-enter-active,.slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: all 1.4s;
 }
 .slide-enter {
@@ -237,16 +258,148 @@ export default {
   transition-delay: 0.2s;
 }
 .item-2 {
-  transition-delay: .4s;
+  transition-delay: 0.4s;
 }
 .item-3 {
-  transition-delay: .6s;
+  transition-delay: 0.6s;
 }
 .item-4 {
-  transition-delay: .8s;
+  transition-delay: 0.8s;
 }
 .item-5 {
   transition-delay: 1s;
 }
 
+
+
+/* animation动画基础 */
+@keyframes move1 {
+  0% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(800px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+.basicAnimation {
+  width: 100px;
+  height: 100px;
+  background-color: teal;
+  /* 调用动画 */
+  animation-name: move1;
+  /* 持续时间 */
+  animation-duration: 3s;
+}
+/* animation动画基础 */
+
+/* animation动画绕圈 */
+@keyframes move2 {
+  0% {
+    transform: translateX(0px);
+  }
+  25% {
+    transform: translateX(500px);
+  }
+  50% {
+    transform: translate(500px, 250px);
+  }
+  75% {
+    transform: translate(0px, 250px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+.circleAnimation {
+  width: 100px;
+  height: 100px;
+  background-color: teal;
+  animation-name: move2;
+  animation-duration: 3s;
+}
+/* animation动画绕圈 */
+
+/* animation-timing-function属性的steps */
+.stepsAnimation {
+  width: 0;
+  height: 30px;
+  background-color: teal;
+  /* animation: move 4s linear  forwards; */
+  /* steps 就是分几步来完成动画，有了 steps 不要写ease linear了 */
+  animation: move3 4s steps(10) forwards;
+}
+
+@keyframes move3 {
+  0% {
+  }
+  100% {
+    width: 200px;
+  }
+}
+/* animation-timing-function属性的steps */
+
+/* 打字机效果 */
+.fontAnimation {
+  font-size: 46px;
+  font-family: monospace;
+  /* 1ch 代表0的宽度  */
+  width: 0ch;
+  white-space: nowrap;
+  /* animation: move 4s linear  forwards; */
+  /* steps 就是分几步来完成动画，有了 steps 不要写ease linear了 */
+  animation: move4 4s steps(9) forwards;
+  overflow: hidden;
+}
+
+@keyframes move4 {
+  0% {
+  }
+  100% {
+    width: 18ch;
+  }
+}
+/* 打字机效果 */
+
+/* 简写animation */
+@keyframes move5 {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(1000px, 0);
+  }
+}
+
+.simpleAnimation {
+  width: 100px;
+  height: 100px;
+  background-color: teal;
+  /* 动画名称 */
+  /* animation-name: move; */
+  /* 持续时间 */
+  /* animation-duration: 2s; */
+  /* 速度曲线 */
+  /* animation-timing-function: ease-in; */
+  /* 何时开始:延迟一秒 */
+  /* animation-delay: 1s; */
+  /* 重复次数 */
+  /* animation-iteration-count: 2; */
+  /* 是否逆向播放 */
+  /* animation-direction: alternate-reverse; */
+  /* 结束后状态 */
+  /* animation-fill-mode: forwards; */
+
+  animation: move5 2s linear 0s infinite alternate forwards;
+}
+/* 鼠标经过暂停动画 */
+.simpleAnimation:hover {
+  animation-play-state: paused;
+}
+/* 简写animation */
 </style>

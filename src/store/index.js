@@ -1,27 +1,31 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-import utils from '../utils/utils';
+import Vue from "vue";
+import Vuex from "vuex";
+import axios from "axios";
+import utils from "../utils/utils";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   // 数据，相当于data
   state: {
-    isMainPage: '',
+    token: false,
+    isMainPage: "",
     routeHistory: [],
     auth: {
-      accessToken: '', // 令牌token
-      expireTime: '', // 过期时间
-      serverAddress: '' // 服务器地址
+      accessToken: "", // 令牌token
+      expireTime: "", // 过期时间
+      serverAddress: "" // 服务器地址
     },
     accout: {
-      loginName: '', // 登录名称
-      password: '' // md5加密后的密码
+      loginName: "", // 登录名称
+      password: "" // md5加密后的密码
     }
   },
   getters: {},
   // 里面定义方法，操作state方发
   mutations: {
+    setToekn(state, flag) {
+      state.token = flag;
+    },
     changeMain(state, flag) {
       state.isMainPage = flag;
     },
@@ -45,30 +49,30 @@ const store = new Vuex.Store({
   // 操作异步操作mutation
   actions: {
     OPENAPI_Post({ dispatch }, params) {
-      params.method = 'post';
-      dispatch('OPENAPI_CfgTool', params);
+      params.method = "post";
+      dispatch("OPENAPI_CfgTool", params);
     },
     OPENAPI_CfgTool({ state, params }) {
       const ajaxUrl = params.url;
       let headers = {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Cache-Control': 'no-cache'
+        "Content-Type": "application/json;charset=UTF-8",
+        "Cache-Control": "no-cache"
       };
       if (params.headers !== undefined) {
         headers = params.headers;
       }
-      const token = (state.auth && state.auth.accessToken) || '';
-      if (token !== '') {
+      const token = (state.auth && state.auth.accessToken) || "";
+      if (token !== "") {
         headers.Authorization = token;
       }
       const timeout = 0;
       const showSuc = params.showSuc || false;
-      const showWrong
-        = typeof params.showWrong !== 'undefined' ? params.showWrong : true;
+      const showWrong =
+        typeof params.showWrong !== "undefined" ? params.showWrong : true;
       const root = state.nowEntry;
-      let jsonStr
-        = typeof params.dataMap === 'undefined'
-          ? ''
+      let jsonStr =
+        typeof params.dataMap === "undefined"
+          ? ""
           : JSON.stringify(params.dataMap);
       if (params.headers !== undefined) {
         jsonStr = params.dataMap;
@@ -79,19 +83,19 @@ const store = new Vuex.Store({
         data: jsonStr,
         baseUrl: root,
         timeout,
-        responseType: 'json',
+        responseType: "json",
         headers
       };
       axios(option)
         .then(res => {
           const response = res.data;
           const errorCode = response.code || res.code;
-          const success = errorCode === '成功';
+          const success = errorCode === "成功";
           if (showSuc && success) {
-            this.$message.success('成功');
+            this.$message.success("成功");
           } else if (!success) {
             if (showWrong) {
-              let errorMsg = '';
+              let errorMsg = "";
               console.log(`errCode_${errorCode}`);
               errorMsg = state.$lang.errCode[`errCpde_${errorCode}`];
 
@@ -115,7 +119,7 @@ const store = new Vuex.Store({
           if (error.response.status === 502) {
             utils.logout();
           }
-          console.log('error', error, option.url, option.data);
+          console.log("error", error, option.url, option.data);
         });
     }
   },
