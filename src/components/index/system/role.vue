@@ -1,5 +1,6 @@
 <template>
   <div class="teamInfoPages">
+    <el-scrollbar style="height: 100%">
     <!-- <el-empty style="flex: 1" description="暂无数据"></el-empty> -->
     <div class="item-inline" style="white-space: nowrap;">
       <span>搜索：</span>
@@ -46,6 +47,7 @@
       :props="defaultProps"
       style="width: 300px;height: 300px;"
     ></el-tree>
+  </el-scrollbar>
   </div>
 </template>
 <script>
@@ -174,10 +176,7 @@ export default {
 };
 </script>
 <style scoped>
-.teamInfoPages {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  padding: 24px 16px 16px 24px;
+.teamInfoPages >>> .el-scrollbar__wrap {
+  overflow-x: hidden;
 }
+</style>

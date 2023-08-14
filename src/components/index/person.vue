@@ -52,15 +52,6 @@ export default {
 };
 </script>
 <style scoped>
-.teamInfoPages {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  padding: 24px 16px 16px 24px;
-  border-radius: 4px;
-}
-
 /* 1,必须去掉scoped，否则overflow-x: hidden失效 */
 .box {
   width: 300px;

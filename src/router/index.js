@@ -55,18 +55,29 @@ const routes = [
         name: "设置"
       },
       {
-        path: "lowCode",
+        path: "index",
         component: () => import("../components/LowCode/index.vue"),
         name: "低代码"
       },
       {
-        path: "lowCode2",
+        path: "index2",
         component: () => import("../components/LowCode/index2.vue"),
         name: "低代码2"
       },
       {
         path: "element",
         component: () => import("../components/element/element.vue"),
+        name: "组件测试"
+      },
+      {
+        path: "Card",
+        component: () => import("../components/packagingComponents/Card.vue"),
+        name: "组件测试"
+      }
+      ,
+      {
+        path: "Table",
+        component: () => import("../components/packagingComponents/Table.vue"),
         name: "组件测试"
       }
     ]

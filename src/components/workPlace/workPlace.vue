@@ -32,11 +32,5 @@ export default {
   padding-bottom: 12px;
   box-sizing: border-box;
 }
-.teamInfoPages {
-  box-sizing: border-box;
-  height: 100%;
-  background: #fff;
-  padding: 24px 16px 16px 24px;
-  border-radius: 4px;
-}
+
 </style>

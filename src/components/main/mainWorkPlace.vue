@@ -51,12 +51,12 @@ export default {
           title: "弹框"
         },
         {
-          to: "/Index/lowCode",
+          to: "/Index/index",
           imgUrl: require("../../assets/logo/4.png"),
           title: "低代码1"
         },
         {
-          to: "/Index/lowCode2",
+          to: "/Index/index2",
           imgUrl: require("../../assets/logo/5.png"),
           title: "低代码2"
         },

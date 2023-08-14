@@ -1,6 +1,6 @@
 <template>
-  <div style="width: 800px">
-    <el-scrollber style="height: 100%">
+  <div  class="teamInfoPages" >
+    <el-scrollbar style="height: 100%">
       <el-table :data="tableData" border row-key="id" align="left">
         <el-table-column v-for="(item, index) in col" :key="`col_${index}`" :prop="dropCol[index].prop"
           :label="item.label">
@@ -13,7 +13,7 @@
       <pre style="text-align: left">
         {{ tableData }}
       </pre>
-    </el-scrollber>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -101,7 +101,6 @@ export default {
   },
   mounted() {
     this.rowDrop();
-    this.columnDrop();
   },
   methods: {
     rowDrop() {
@@ -127,3 +126,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.teamInfoPages >>> .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+</style>
