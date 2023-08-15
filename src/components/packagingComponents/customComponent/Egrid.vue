@@ -1,13 +1,37 @@
 <template>
   <div :id="EgridId" :class="hideSide ? 'noSideBorder' : ''">
-    <el-form id="tableContainer" ref="egridForm" :model="customValiData"
-      :style="{ borderColor: $store.state.curDataTheme === 'theme1' ? '#E1E1E1' : '#2c3237' }" class="tableContainer">
-      <el-table ref="Egrid" :data="currentData" :height="tHeight" v-bind="tableBind" :border="true" :row-key="rowKey"
-        class="egrid" @selection-change="selectChange" @current-change="currentChange" @row-click="rowClick"
-        @row-dblclick="rowDBClick" @sort-change="sortChange">
+    <el-form
+      id="tableContainer"
+      ref="egridForm"
+      :model="customValiData"
+      :style="{
+        borderColor:
+          $store.state.curDataTheme === 'theme1' ? '#E1E1E1' : '#2c3237'
+      }"
+      class="tableContainer"
+    >
+      <el-table
+        ref="Egrid"
+        :data="currentData"
+        :height="tHeight"
+        v-bind="tableBind"
+        :border="true"
+        :row-key="rowKey"
+        class="egrid"
+        @selection-change="selectChange"
+        @current-change="currentChange"
+        @row-click="rowClick"
+        @row-dblclick="rowDBClick"
+        @sort-change="sortChange"
+      >
         <template v-for="(tp, index) in typesColumns">
-          <el-table-column v-if="tp.type === 'expand'" v-bind="tp.props" :type="tp.type" :key="tp.type"
-            show-overflow-tooltip>
+          <el-table-column
+            v-if="tp.type === 'expand'"
+            v-bind="tp.props"
+            :type="tp.type"
+            :key="tp.type"
+            show-overflow-tooltip
+          >
             <template slot-scope="scope">
               <!-- 23/07/24注释，表格展开区域代码重新 -->
               <!-- <div id = "expandAreaEgrid">
@@ -16,44 +40,143 @@
                   :index="index"/>
               </div> -->
               <!-- 23/07/24新增，表格展开区域新增嵌套表格 -->
-              <el-table :data="customGet(scope.row, childrenData)" style="width: 100%;">
+              <el-table
+                :data="customGet(scope.row, childrenData)"
+                style="width: 100%;"
+              >
                 <template v-for="col in sonColumns">
-                  <el-table-column v-if="!col.show" :label="col.name" :prop="col.propName" :key="col.propName"
-                    align="center">
+                  <el-table-column
+                    v-if="!col.show"
+                    :label="col.name"
+                    :prop="col.propName"
+                    :key="col.propName"
+                    align="center"
+                  >
                     <template slot-scope="childrenScope">
-                      <DefaultButton v-for="item in col.DefaultButton" :key="item.title"
-                        :button-class="item.visible ? (item.visible.required(childrenScope.row)) : ''"
-                        :classname="item.bothStatus ? item.bothStatus.classname[childrenScope.row[item.bothStatus.propName]] : item.classname"
-                        :title="item.bothStatus ? item.bothStatus.title[childrenScope.row[item.bothStatus.propName]] : item.title"
-                        @click.native.stop="item.clickEvent(childrenScope.row, childrenScope.$index)" />
+                      <DefaultButton
+                        v-for="item in col.DefaultButton"
+                        :key="item.title"
+                        :button-class="
+                          item.visible
+                            ? item.visible.required(childrenScope.row)
+                            : ''
+                        "
+                        :classname="
+                          item.bothStatus
+                            ? item.bothStatus.classname[
+                                childrenScope.row[item.bothStatus.propName]
+                              ]
+                            : item.classname
+                        "
+                        :title="
+                          item.bothStatus
+                            ? item.bothStatus.title[
+                                childrenScope.row[item.bothStatus.propName]
+                              ]
+                            : item.title
+                        "
+                        @click.native.stop="
+                          item.clickEvent(
+                            childrenScope.row,
+                            childrenScope.$index
+                          )
+                        "
+                      />
                       <div v-if="col.StatusButton">
                         <div
-                          :style="{ 'background-color': col.StatusList && col.StatusList[Number(childrenScope.row[col.propName])] ? col.StatusList[Number(childrenScope.row[col.propName])].color : '#999999' }"
-                          class="el-table-color" />
-                        <span type="text">{{ col.StatusList && col.StatusList[Number(childrenScope.row[col.propName])] ?
-                          $t("pub." +
-                          col.StatusList[Number(childrenScope.row[col.propName])].text) : "" }}</span>
+                          :style="{
+                            'background-color':
+                              col.StatusList &&
+                              col.StatusList[
+                                Number(childrenScope.row[col.propName])
+                              ]
+                                ? col.StatusList[
+                                    Number(childrenScope.row[col.propName])
+                                  ].color
+                                : '#999999'
+                          }"
+                          class="el-table-color"
+                        />
+                        <span type="text">{{
+                          col.StatusList &&
+                          col.StatusList[
+                            Number(childrenScope.row[col.propName])
+                          ]
+                            ? $t(
+                                "pub." +
+                                  col.StatusList[
+                                    Number(childrenScope.row[col.propName])
+                                  ].text
+                              )
+                            : ""
+                        }}</span>
                       </div>
                       <div v-if="col.IsAddEnum">
                         <el-button
-                          :class="col.IsAddEnum.className ? (col.IsAddEnum.className.required(childrenScope.row)) : ''"
-                          disabled="disabled">{{ col.IsAddEnum.textString ?
-                          (col.IsAddEnum.textString.required(childrenScope.row)) : ''
-                          }}</el-button>
+                          :class="
+                            col.IsAddEnum.className
+                              ? col.IsAddEnum.className.required(
+                                  childrenScope.row
+                                )
+                              : ''
+                          "
+                          disabled="disabled"
+                          >{{
+                            col.IsAddEnum.textString
+                              ? col.IsAddEnum.textString.required(
+                                  childrenScope.row
+                                )
+                              : ""
+                          }}</el-button
+                        >
                       </div>
                       <span
-                        v-show="!col.IsAddEnum && !col.DefaultButton && !col.StatusButton && !col.levelButton && !col.component && !col.RegularButton || col.buttomTextCombined === true">{{
-                        col.formatter ?
-                        col.formatter(childrenScope.row[col.propName], childrenScope.row) :
-                        childrenScope.row[col.propName] }}</span>
-                      <component v-if="col.component" :is="col.component"
-                        v-bind="getCptBind(childrenScope, col, childrenScope.$index)" v-on="col.listeners" />
-                      <span v-for="item in col.RegularButton"
-                        :class="item.visible ? (item.visible.required(childrenScope.row)) : ''" :key="item.title"
-                        :title="item.title" @click="item.clickEvent(childrenScope.row)">
+                        v-show="
+                          (!col.IsAddEnum &&
+                            !col.DefaultButton &&
+                            !col.StatusButton &&
+                            !col.levelButton &&
+                            !col.component &&
+                            !col.RegularButton) ||
+                            col.buttomTextCombined === true
+                        "
+                        >{{
+                          col.formatter
+                            ? col.formatter(
+                                childrenScope.row[col.propName],
+                                childrenScope.row
+                              )
+                            : childrenScope.row[col.propName]
+                        }}</span
+                      >
+                      <component
+                        v-if="col.component"
+                        :is="col.component"
+                        v-bind="
+                          getCptBind(childrenScope, col, childrenScope.$index)
+                        "
+                        v-on="col.listeners"
+                      />
+                      <span
+                        v-for="item in col.RegularButton"
+                        :class="
+                          item.visible
+                            ? item.visible.required(childrenScope.row)
+                            : ''
+                        "
+                        :key="item.title"
+                        :title="item.title"
+                        @click="item.clickEvent(childrenScope.row)"
+                      >
                         <span
-                          :class="item.isDisabled && item.isDisabled(childrenScope.row) ? item.disableClass : item.classname"
-                          v-text="item.name" /></span>
+                          :class="
+                            item.isDisabled &&
+                            item.isDisabled(childrenScope.row)
+                              ? item.disableClass
+                              : item.classname
+                          "
+                          v-text="item.name"
+                      /></span>
                     </template>
                   </el-table-column>
                 </template>
@@ -61,72 +184,184 @@
               <template />
             </template>
           </el-table-column>
-          <el-table-column v-else :key="tp.props" :type="tp.type" v-bind="tp.props" :selectable="selectable"
-            :reserve-selection="reserveSelection" show-overflow-tooltip />
+          <el-table-column
+            v-else
+            :key="tp.props"
+            :type="tp.type"
+            v-bind="tp.props"
+            :selectable="selectable"
+            :reserve-selection="reserveSelection"
+            show-overflow-tooltip
+          />
         </template>
         <template v-for="col in renderColumns">
-          <el-table-column v-if="col.show" :key="col.prop" v-bind="getColBinds(col)" :sortable="col.sortable"
-            :header-align="col.align" :width="col.width ? col.width : ''" :resizable="col.resizeable"
-            show-overflow-tooltip>
+          <el-table-column
+            v-if="col.show"
+            :key="col.prop"
+            v-bind="getColBinds(col)"
+            :sortable="col.sortable"
+            :header-align="col.align"
+            :width="col.width ? col.width : ''"
+            :resizable="col.resizeable"
+            show-overflow-tooltip
+          >
             <template slot-scope="scope">
-              <DefaultButton v-for="item in col.DefaultButton" :key="item.title"
-                :button-class="item.visible ? (item.visible.required(scope.row)) : ''"
-                :classname="item.bothStatus ? item.bothStatus.classname[scope.row[item.bothStatus.prop]] : item.classname"
-                :title="item.bothStatus ? item.bothStatus.title[scope.row[item.bothStatus.prop]] : item.title"
-                @click.native.stop="item.clickEvent(scope.row, scope.$index)" />
+              <DefaultButton
+                v-for="item in col.DefaultButton"
+                :key="item.title"
+                :button-class="
+                  item.visible ? item.visible.required(scope.row) : ''
+                "
+                :classname="
+                  item.bothStatus
+                    ? item.bothStatus.classname[scope.row[item.bothStatus.prop]]
+                    : item.classname
+                "
+                :title="
+                  item.bothStatus
+                    ? item.bothStatus.title[scope.row[item.bothStatus.prop]]
+                    : item.title
+                "
+                @click.native.stop="item.clickEvent(scope.row, scope.$index)"
+              />
               <div v-if="col.StatusButton">
-                <span type="text">{{ col.StatusList && col.StatusList[Number(scope.row[col.prop])] ? $t("pub." +
-                  col.StatusList[Number(scope.row[col.prop])].text) : "" }}</span>
+                <span type="text">{{
+                  col.StatusList && col.StatusList[Number(scope.row[col.prop])]
+                    ? $t(
+                        "pub." +
+                          col.StatusList[Number(scope.row[col.prop])].text
+                      )
+                    : ""
+                }}</span>
                 <div
-                  :style="{ 'background-color': col.StatusList && col.StatusList[Number(scope.row[col.prop])] ? col.StatusList[Number(scope.row[col.prop])].color : '#C2C2C2' }"
-                  class="el-table-color" />
-                <span type="text">{{ col.StatusList && col.StatusList[(scope.row[col.prop])] ?
-                  $t(col.StatusList[(scope.row[col.prop])].text) : (scope.row[col.prop].indexOf("errCode.errCode_") > -1
-                  ?
-                  $t(scope.row[col.prop]) : "") }}</span>
+                  :style="{
+                    'background-color':
+                      col.StatusList &&
+                      col.StatusList[Number(scope.row[col.prop])]
+                        ? col.StatusList[Number(scope.row[col.prop])].color
+                        : '#C2C2C2'
+                  }"
+                  class="el-table-color"
+                />
+                <span type="text">{{
+                  col.StatusList && col.StatusList[scope.row[col.prop]]
+                    ? $t(col.StatusList[scope.row[col.prop]].text)
+                    : scope.row[col.prop].indexOf("errCode.errCode_") > -1
+                    ? $t(scope.row[col.prop])
+                    : ""
+                }}</span>
               </div>
               <div v-if="col.patrolRoute">
-                <div v-if="scope.row.isFirstLast && scope.row.routeMode !== 4"
-                  :style="{ 'background-color': scope.row.pointSeq === 1 ? '#2CCA8D' : '#FF7C5B' }"
-                  class="el-table-patrol">{{ scope.row.pointSeq === 1 ? $t("pub.firstPoint") : $t("pub.lastPoint") }}
+                <div
+                  v-if="scope.row.isFirstLast && scope.row.routeMode !== 4"
+                  :style="{
+                    'background-color':
+                      scope.row.pointSeq === 1 ? '#2CCA8D' : '#FF7C5B'
+                  }"
+                  class="el-table-patrol"
+                >
+                  {{
+                    scope.row.pointSeq === 1
+                      ? $t("pub.firstPoint")
+                      : $t("pub.lastPoint")
+                  }}
                 </div>
-
               </div>
               <div v-if="col.SwitchEnable">
-                <el-switch v-model="scope.row[col.isEnabled]" active-color="#13ce66" inactive-color="#ff4949"
-                  @change="col.switchEvent(scope.row)" />
+                <el-switch
+                  v-model="scope.row[col.isEnabled]"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="col.switchEvent(scope.row)"
+                />
               </div>
               <div v-if="col.showSelect">
-                <el-select-more :select-more-list="scope.row.personIdList" :show-select-more="col.showSelect"
-                  @showSelectMoreDialog="col.showSelectMoreDialog(scope.row)" />
+                <el-select-more
+                  :select-more-list="scope.row.personIdList"
+                  :show-select-more="col.showSelect"
+                  @showSelectMoreDialog="col.showSelectMoreDialog(scope.row)"
+                />
               </div>
               <div v-if="col.showInput">
-                <el-input v-model="scope.row[col.value]" max="1440" maxlength="4" />
+                <el-input
+                  v-model="scope.row[col.value]"
+                  max="1440"
+                  maxlength="4"
+                />
               </div>
               <div v-if="col.timeSelect">
-                <el-time-picker v-model="scope.row[col.value]" :format="col.Format" :value-format="col.Format"
-                  @change="col.timeChange(scope.row)" />
-                <span :class="scope.row[col.isAcross] ? 'isDisplay' : 'noDisplay'" style="color: red">+1</span>
+                <el-time-picker
+                  v-model="scope.row[col.value]"
+                  :format="col.Format"
+                  :value-format="col.Format"
+                  @change="col.timeChange(scope.row)"
+                />
+                <span
+                  :class="scope.row[col.isAcross] ? 'isDisplay' : 'noDisplay'"
+                  style="color: red"
+                  >+1</span
+                >
               </div>
               <div v-if="col.dateSelect">
-                <el-date-picker v-model="scope.row[col.value]" :value-format="col.valueFormat" type="daterange"
-                  @change="col.dateChange(scope.row, scope.row[col.value])" />
+                <el-date-picker
+                  v-model="scope.row[col.value]"
+                  :value-format="col.valueFormat"
+                  type="daterange"
+                  @change="col.dateChange(scope.row, scope.row[col.value])"
+                />
               </div>
               <div v-if="col.IsAddEnum">
-                <el-button :class="col.IsAddEnum.className ? (col.IsAddEnum.className.required(scope.row)) : ''"
-                  disabled="disabled">{{ col.IsAddEnum.textString ? (col.IsAddEnum.textString.required(scope.row)) : ''
-                  }}</el-button>
+                <el-button
+                  :class="
+                    col.IsAddEnum.className
+                      ? col.IsAddEnum.className.required(scope.row)
+                      : ''
+                  "
+                  disabled="disabled"
+                  >{{
+                    col.IsAddEnum.textString
+                      ? col.IsAddEnum.textString.required(scope.row)
+                      : ""
+                  }}</el-button
+                >
               </div>
               <span
-                v-show="!col.IsAddEnum && !col.DefaultButton && !col.StatusButton && !col.levelButton && !col.component && !col.RegularButton || col.buttomTextCombined === true">{{
-                col.formatter ?
-                col.formatter(scope.row[col.prop], scope.row) : scope.row[col.prop] }}</span>
-              <component v-if="col.component" :is="col.component" v-bind="getCptBind(scope, col, scope.$index)"
-                v-on="col.listeners" />
-              <span v-for="item in col.RegularButton" :class="item.visible ? (item.visible.required(scope.row)) : ''"
-                :key="item.title" :title="item.title" @click="item.clickEvent(scope.row)">
-                <span :class="item.isDisabled && item.isDisabled(scope.row) ? item.disableClass : item.classname"
-                  v-text="item.name" /></span>
+                v-show="
+                  (!col.IsAddEnum &&
+                    !col.DefaultButton &&
+                    !col.StatusButton &&
+                    !col.levelButton &&
+                    !col.component &&
+                    !col.RegularButton) ||
+                    col.buttomTextCombined === true
+                "
+                >{{
+                  col.formatter
+                    ? col.formatter(scope.row[col.prop], scope.row)
+                    : scope.row[col.prop]
+                }}</span
+              >
+              <component
+                v-if="col.component"
+                :is="col.component"
+                v-bind="getCptBind(scope, col, scope.$index)"
+                v-on="col.listeners"
+              />
+              <span
+                v-for="item in col.RegularButton"
+                :class="item.visible ? item.visible.required(scope.row) : ''"
+                :key="item.title"
+                :title="item.title"
+                @click="item.clickEvent(scope.row)"
+              >
+                <span
+                  :class="
+                    item.isDisabled && item.isDisabled(scope.row)
+                      ? item.disableClass
+                      : item.classname
+                  "
+                  v-text="item.name"
+              /></span>
             </template>
           </el-table-column>
         </template>
@@ -136,10 +371,17 @@
       </el-table>
     </el-form>
     <div v-if="showPagination" :id="paginationBlockId" class="paginationBlock">
-      <el-pagination :current-page.sync="currentPage" :page-sizes="pageSizes" :page-size="pageSize" :pager-count="7"
-        :simple="paginationAttributesSimple" :layout="paginationAttributesLayout"
-        :total="isLazyLoading && customTotal ? customTotal : tableData.length" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+      <el-pagination
+        :current-page.sync="currentPage"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        :pager-count="7"
+        :simple="paginationAttributesSimple"
+        :layout="paginationAttributesLayout"
+        :total="isLazyLoading && customTotal ? customTotal : tableData.length"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -160,7 +402,8 @@ const BOOLEAN_KEYS = [
 
 const TYPES = ["selection", "expand", "index"];
 
-const COLUMN_KEY_MAP = { // 表格列
+const COLUMN_KEY_MAP = {
+  // 表格列
   label: "label",
   prop: "prop"
 };
@@ -304,7 +547,8 @@ export default {
       type: Boolean,
       default: false
     },
-    resizeable: { // 表格是否能自定义大小
+    resizeable: {
+      // 表格是否能自定义大小
       type: Boolean,
       default: true
     },
@@ -397,8 +641,8 @@ export default {
     },
 
     /* 如选中，展开等特殊列，包括其类型对应的事件
-                                    * 如：selection，对应select,select-all,select-change
-                                    * */
+     * 如：selection，对应select,select-all,select-change
+     * */
 
     typesColumns() {
       const { columnType: type, columnTypeProps } = this;
@@ -471,11 +715,11 @@ export default {
     },
     // 点击排序触发
     /*
-    * sortObj是一个包含
-    * column: 当前列信息
-    * prop: 当前列属性
-    * order: 当前排列规则
-    * */
+     * sortObj是一个包含
+     * column: 当前列信息
+     * prop: 当前列属性
+     * order: 当前排列规则
+     * */
 
     sortChange(sortObj) {
       this.$emit("sort-change", sortObj);
@@ -490,12 +734,18 @@ export default {
         // 防止页签之间跳转，获取不到二级菜单高度的情况
         const EgridDiv = document.getElementById(this.EgridId);
         const paginationBlock = document.getElementById(this.paginationBlockId);
-        const insertAllCodeDevice = document.getElementById("insertAllCodeDevice");
+        const insertAllCodeDevice = document.getElementById(
+          "insertAllCodeDevice"
+        );
         const subChannelCode = document.getElementById("subChannelCode");
         const insertCode = document.getElementById("insertCode");
         let parent = subChannelCode !== null ? subChannelCode : insertCode;
         parent = insertAllCodeDevice !== null ? insertAllCodeDevice : parent;
-        const height = parent.offsetHeight - (this.showPagination ? paginationBlock.offsetHeight : 0) - 12 - EgridDiv.offsetTop;
+        const height =
+          parent.offsetHeight -
+          (this.showPagination ? paginationBlock.offsetHeight : 0) -
+          12 -
+          EgridDiv.offsetTop;
         this.tHeight = this.fourthPageSign ? height - 40 : height; // 特殊的四级页签情况，需要再减去按钮栏高度
       });
     },
@@ -530,9 +780,10 @@ export default {
     },
 
     /*
-                                    * @param val 当前页面条数
-                                    * */
-    handleSizeChange(val) { // 页面条数发生变更事件
+     * @param val 当前页面条数
+     * */
+    handleSizeChange(val) {
+      // 页面条数发生变更事件
       const selectedAlarmCopy = this.selectedRows;
       if (this.pageSize !== val) {
         this.pageSize = val;
@@ -552,12 +803,16 @@ export default {
     },
 
     /*
-                                    * @param val 当前页码
-                                    * */
-    handleCurrentChange(val) { // 页码发生变更事件
+     * @param val 当前页码
+     * */
+    handleCurrentChange(val) {
+      // 页码发生变更事件
       // const selectedAlarmCopy = this.selectedRows;
       if (this.isLazyLoading && this.customTotal) {
-        this.$emit("requestUnloadData", { currentPage: val, pageSize: this.pageSize });// 报告分页加载的数据
+        this.$emit("requestUnloadData", {
+          currentPage: val,
+          pageSize: this.pageSize
+        }); // 报告分页加载的数据
         this.currentPage = val;
         this.$emit("changeCurrentPage");
       } else {
@@ -570,7 +825,7 @@ export default {
         this.RowClick(row);
       }
       // eslint-disable-next-line
-        if ('function' !== typeof this.selectable) {
+      if ("function" !== typeof this.selectable) {
         this.$emit("rowClickEvent", row);
       }
     },
@@ -591,29 +846,28 @@ export default {
 </script>
 
 <style scoped>
-  .table-expand {
-    font-size: 0;
+.table-expand {
+  font-size: 0;
+}
 
-  }
+.table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
 
-  .table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 25%;
+}
 
-  .table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 25%;
-  }
+.isDisplay {
+  position: absolute;
+  left: 100px;
+  top: 4px;
+}
 
-  .isDisplay {
-    position: absolute;
-    left: 100px;
-    top: 4px;
-  }
-
-  .noDisplay {
-    display: none;
-  }
+.noDisplay {
+  display: none;
+}
 </style>
