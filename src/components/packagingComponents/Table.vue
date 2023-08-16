@@ -127,7 +127,15 @@ export default {
     timeChange() {},
     timeoutChange() {},
     showSelectMoreDialog() {},
-    delRow() {}
+    delRow(row) {
+      const delIndex = this.EgridData.data.findIndex(item => item.pointSeq === row.pointSeq);
+      this.EgridData.data.splice(delIndex, 1);
+      this.EgridData.data.forEach((item, index) => {
+        item.pointSeq = index + 1;
+      });
+      console.log(row);
+
+    }
   }
 };
 </script>
