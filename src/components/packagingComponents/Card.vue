@@ -1,6 +1,10 @@
 <template>
   <div class="teamInfoPages">
-    <CustomCard :card-data="CardData.data" :rows="CardData.rows" :show-pagination="true"></CustomCard>
+    <CustomCard
+      :card-data="CardData.data"
+      :rows="CardData.rows"
+      :show-pagination="true"
+    ></CustomCard>
   </div>
 </template>
 <script>
@@ -16,53 +20,53 @@ export default {
           {
             id: "1",
             cardName: "测试1",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "2",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "3",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "4",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "5",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "6",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "7",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "8",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "9",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
+            patrolRoute: "路线1分钟无序"
           },
           {
             id: "10",
             cardName: "测试2",
-            patrolRoute: "路线1分钟无序",
-          },
+            patrolRoute: "路线1分钟无序"
+          }
         ],
         rows: [
           {
@@ -70,20 +74,19 @@ export default {
             name: "卡片名称",
             isTitle: true,
             show: false,
-            showTitle: false,
+            showTitle: false
           },
           {
             prop: "patrolRoute",
             show: false,
             showTitle: false,
-            icon: "",
+            icon: ""
           }
         ]
       }
     };
   }
 };
-
 </script>
 
 <style scoped></style>

@@ -1,6 +1,11 @@
 <template>
-  <el-button :class="'button_circle ' + buttonClass + ' '+ disabledClass" :title="title" :icon="classname" type="icon"
-    @click="onclick" />
+  <el-button
+    :class="'button_circle ' + buttonClass + ' ' + disabledClass"
+    :title="title"
+    :icon="classname"
+    type="icon"
+    @click="onclick"
+  />
 </template>
 
 <script>
@@ -40,6 +45,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

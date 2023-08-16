@@ -1,9 +1,13 @@
 <template>
-  <div  class="teamInfoPages" >
+  <div class="teamInfoPages">
     <el-scrollbar style="height: 100%">
       <el-table :data="tableData" border row-key="id" align="left">
-        <el-table-column v-for="(item, index) in col" :key="`col_${index}`" :prop="dropCol[index].prop"
-          :label="item.label">
+        <el-table-column
+          v-for="(item, index) in col"
+          :key="`col_${index}`"
+          :prop="dropCol[index].prop"
+          :label="item.label"
+        >
         </el-table-column>
       </el-table>
       <pre style="text-align: left">

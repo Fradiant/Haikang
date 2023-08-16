@@ -738,15 +738,16 @@ export default {
           "insertAllCodeDevice"
         );
         const subChannelCode = document.getElementById("subChannelCode");
-        const insertCode = document.getElementById("insertCode");
+        const insertCode = document.getElementsByClassName("teamInfoPages")[0];
         let parent = subChannelCode !== null ? subChannelCode : insertCode;
         parent = insertAllCodeDevice !== null ? insertAllCodeDevice : parent;
-        const height =
-          parent.offsetHeight -
-          (this.showPagination ? paginationBlock.offsetHeight : 0) -
-          12 -
-          EgridDiv.offsetTop;
-        this.tHeight = this.fourthPageSign ? height - 40 : height; // 特殊的四级页签情况，需要再减去按钮栏高度
+        const height
+          = parent.offsetHeight
+          - (this.showPagination ? paginationBlock.offsetHeight : 0)
+          - 52
+          - EgridDiv.offsetTop;
+        console.log(parent.offsetHeight);
+        this.tHeight = height; // 特殊的四级页签情况，需要再减去按钮栏高度
       });
     },
     cancleToggleRowSelection(newRebuildPackRows) {
@@ -869,5 +870,20 @@ export default {
 
 .noDisplay {
   display: none;
+}
+
+.paginationBlock {
+  text-align: center;
+  border-left: 0 none !important;
+  border-right: 0 none !important;
+  border-bottom: 0 none !important;
+  border-top: 0 none;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  height: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 11px;
 }
 </style>
