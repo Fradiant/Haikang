@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="">实现嵌套表格的折叠展开（仅允许展开一行）</div>
     <el-table
       highlight-current-row
       class="uiot-table"
@@ -12,6 +13,8 @@
       :expand-row-keys="expands"
       @expand-change="expandChange"
     >
+      <!-- :row-key="row => row.id"
+      :expand-row-keys="[1, 3]" -->
       <el-table-column type="expand">
         <template>
           <el-table class="table-expand" :data="childTableData">
@@ -100,10 +103,10 @@ export default {
       return row.id;
     },
     expandChange(row, expandedRows) {
-      this.expands.push(row.id);
       if (expandedRows.length > 1) {
-        this.expands.shift();
-        expandedRows.shift();
+        this.expands = [];
+        this.expands.push(row.id);
+
       }
     }
   }

@@ -51,14 +51,14 @@
       <el-table-column label=" ID" prop="id"></el-table-column>
       <el-table-column label="商品名称" prop="name"></el-table-column>
       <el-table-column label="产地" prop="address"></el-table-column>
-      <el-table-column label="操作">
+      <!-- <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click.stop="editInfo">修改</el-button>
           <el-button type="text" @click.stop="editInfo" style="color: red"
             >删除</el-button
           >
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </div>
 </template>
@@ -74,14 +74,6 @@ export default {
           address: "云南",
           type: 3,
           child: [
-            {
-              comp_name1: "一行商品1",
-              comp_name2: "一行商品2"
-            },
-            {
-              comp_name1: "一行商品1",
-              comp_name2: "一行商品2"
-            }
           ]
         },
         {
@@ -150,9 +142,10 @@ export default {
       let that = this;
       if (expandedRows.length) {
         that.expands = [];
-        if (row.child.length > 0) {
-          that.expands.push(row.id);
-        }
+        // if (row.child.length > 0) {
+        //   that.expands.push(row.id);
+        // }
+        that.expands.push(row.id);
       } else {
         that.expands = [];
       }

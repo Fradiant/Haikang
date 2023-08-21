@@ -1,13 +1,13 @@
 <template>
   <div class="teamInfoPages">
     <div class="">
-      <CheckBox></CheckBox>
+      <!-- <CheckBox></CheckBox> -->
     </div>
     <div class="">
-      <Table></Table>
+      <!-- <Table></Table> -->
     </div>
     <div class="">
-      <!-- <TestTable></TestTable> -->
+      <TestTable></TestTable>
     </div>
   </div>
 </template>

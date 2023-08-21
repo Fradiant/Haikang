@@ -5,7 +5,6 @@
       v-bind="$attrs"
       size="500px"
       :custom-class="'drawerClass'"
-      v-dialogDrag:isDraggable="true"
       :append-to-body="true"
       :modal-append-to-body="false"
       :wrapperClosable="false"
@@ -105,8 +104,8 @@ export default {
             pictureName: imgName,
             pictureSize: imgSize,
             pictureBase64Code:
-              "data:image/jpeg;base64," +
-              imgBase64.replace("data:image/jpeg;base64,", "")
+              "data:image/jpeg;base64,"
+              + imgBase64.replace("data:image/jpeg;base64,", "")
           }; // 图片基本信息
           that.handleFileObj(fileObj, imgdata); // 压缩图片
         };
@@ -184,9 +183,9 @@ export default {
         options.accuracy = Number(options.accuracy);
 
         if (
-          !options.accuracy ||
-          options.accuracy < 0.8 ||
-          options.accuracy > 0.99
+          !options.accuracy
+          || options.accuracy < 0.8
+          || options.accuracy > 0.99
         ) {
           options.accuracy = 0.95;
         }
@@ -230,15 +229,15 @@ export default {
 
           if (i === 7) {
             if (
-              maxFileSize < compressedSize ||
-              desiredFileSize > compressedSize
+              maxFileSize < compressedSize
+              || desiredFileSize > compressedSize
             ) {
               compressedImage = [compressedImage, ...compressedImages]
                 .filter(image => image)
                 .sort(
                   (a, b) =>
-                    Math.abs(0.75 * a.length - targetFileSize) -
-                    Math.abs(0.75 * b.length - targetFileSize) // 内置函数，返回绝对值
+                    Math.abs(0.75 * a.length - targetFileSize)
+                    - Math.abs(0.75 * b.length - targetFileSize) // 内置函数，返回绝对值
                 )[0];
             }
             break;

@@ -12,7 +12,7 @@ Vue.directive('dialogDrag', {
     if (el.className === 'el-drawer__wrapper') {
       dialogHeaderEl = el.querySelector('.el-drawer__header');
       dragDom = el.querySelector('.el-drawer');
-    } else {
+    } else if (el.className === 'el-dialog__wrapper') {
       dialogHeaderEl = el.querySelector('.el-dialog__header');
       dragDom = el.querySelector('.el-dialog');
     }

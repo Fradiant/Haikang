@@ -20,8 +20,10 @@
       >
       <el-button type="text" @click="dialogTestShow = true">海康上传</el-button>
       <!-- <el-button type="text" @click="dialogTestShow = true">海康上传</el-button> -->
-      <el-button type="text" @click="dialogNormalShow = true">正常上传</el-button>
-      
+      <el-button type="text" @click="dialogNormalShow = true"
+        >正常上传</el-button
+      >
+
       <!-- <el-button type="text" @click="dialogVisible = true">点击打开外部引入dialog</el-button> -->
     </div>
     <dialogAll :visible.sync="dialogAll" title="某弹框"></dialogAll>
@@ -62,13 +64,15 @@
         >
       </span>
     </el-dialog>
+    <!-- v-dialogDrag:isDraggable="true" -->
+    <!-- 该属性引发报错，问题原因drag自定义指令未找到对应dom -->
     <el-drawer
       ref="drawer"
       size="500px"
       :append-to-body="false"
       :custom-class="'drawerClass'"
-      v-dialogDrag:isDraggable="true"
       :wrapperClosable="false"
+      v-dialogDrag:isDraggable="true"
       direction="rtl"
       title="我嵌套了 Form !"
       :visible.sync="dialog"
@@ -169,6 +173,14 @@ export default {
       imgDialogVisible: false
     };
   },
+  mounted() {
+    console.log(document.getElementsByClassName("el-drawer__wrapper"));
+    console.log(document.getElementsByClassName("el-dialog__wrapper"));
+    console.log(document.getElementsByClassName("el-drawer__header")[0].style.cssText);
+    console.log(document.getElementsByClassName("el-dialog__header")[0].style.cssText);
+    console.log(document.getElementsByClassName("el-drawer")[0].style.cssText);
+    console.log(document.getElementsByClassName("el-dialog")[0].style.cssText);
+  },
   methods: {
     cancelForm() {
       this.loading = false;
@@ -217,7 +229,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .from_item {
   position: relative;
   display: flex;

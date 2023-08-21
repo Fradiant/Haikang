@@ -113,7 +113,7 @@ export default {
             _this.$set(_this.EgridData.data[index], "pointSeq", index + 1);
             // _this.EgridData.data[index].pointSeq = index + 1;
             // 遗留问题：不手动刷新dom如何实现表格排序
-            _this.refrsh = false;
+            _this.refrsh = false;12
             _this.$nextTick(() => {
               _this.refrsh = true;
               _this.$nextTick(() => {

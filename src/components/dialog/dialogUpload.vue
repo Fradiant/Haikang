@@ -5,7 +5,6 @@
       v-bind="$attrs"
       size="500px"
       :custom-class="'drawerClass'"
-      v-dialogDrag:isDraggable="true"
       :append-to-body="true"
       :modal-append-to-body="false"
       :wrapperClosable="false"
@@ -113,8 +112,6 @@ export default {
           const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
           // base64格式文件转成Blob文件格式
           return this.dataURLtoBlob(dataUrl);
-          // 拿到这个blobFile文件就可以上传给服务端
-          console.log("压缩后的file----------", blobFile);
         };
       };
     },
@@ -161,7 +158,7 @@ export default {
           formData.append("file", compressedBlob);
 
           this.uploading = true;
-          Object(ge["q"])(formData)
+          Object(ge.q)(formData)
             .then(res => {
               if (res.code === 0) {
                 console.log(res.data);
@@ -197,7 +194,7 @@ export default {
     getCroppedImagePromise() {
       let self = this;
       return new Promise(resolve => {
-        let cutImgRef = self.$refs["cutImg"];
+        let cutImgRef = self.$refs.cutImg;
         let cutPos = self.getcutpos();
         let img = new Image();
         let realZoom = self.getRealZoom();
@@ -223,7 +220,7 @@ export default {
 
         let ctx = canvas.getContext("2d");
 
-        img.onload = function() {
+        img.onload = function () {
           ctx.fillStyle = "#fff";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(
@@ -234,7 +231,7 @@ export default {
             img.height
           );
 
-          var dataURL = canvas.toDataURL();
+          let dataURL = canvas.toDataURL();
 
           if (canvas.remove) {
             canvas.remove();
@@ -267,9 +264,9 @@ export default {
 
         options.accuracy = Number(options.accuracy);
         if (
-          !options.accuracy ||
-          options.accuracy < 0.8 ||
-          options.accuracy > 0.99
+          !options.accuracy
+          || options.accuracy < 0.8
+          || options.accuracy > 0.99
         ) {
           options.accuracy = 0.95;
         }
@@ -306,8 +303,8 @@ export default {
                     .filter(data => data)
                     .sort(
                       (a, b) =>
-                        Math.abs(0.75 * a.length - originalSize) -
-                        Math.abs(0.75 * b.length - originalSize)
+                        Math.abs(0.75 * a.length - originalSize)
+                        - Math.abs(0.75 * b.length - originalSize)
                     );
                   currentData = filteredData[0];
                 }
@@ -318,7 +315,9 @@ export default {
                 previousData[1] = currentData;
                 currentStep -= Math.pow(0.5, step + 1);
               } else {
-                if (!(minSize > currentSize)) break;
+                if (!(minSize > currentSize)) {
+                  break;
+                }
                 previousData[0] = currentData;
                 currentStep += Math.pow(0.5, step + 1);
               }
@@ -344,10 +343,10 @@ export default {
         content: e,
         inputFace: 1
       };
-      Object(ge["o"])(t)
+      Object(ge.o)(t)
         .then(e => {
-          0 === e.code &&
-            (this.$message({
+          0 === e.code
+            && (this.$message({
               type: "success",
               message: this.$t("BiologicalInfo.message.operation_success")
             }),
@@ -427,14 +426,14 @@ export default {
       // canvas重新绘制图片
       context.drawImage(image, 0, 0, targetWidth, targetHeight);
       if (fileSize) {
-        image.src = canvas.toDataURL(fileObj["type"], 0.94);
+        image.src = canvas.toDataURL(fileObj.type, 0.94);
       }
       image.addEventListener("load", () => {
         let height = "100%";
         let width = "100%";
         if (image.naturalWidth / image.naturalHeight >= 1) {
-          height =
-            Math.round((image.naturalHeight / image.naturalWidth) * 100) + "%";
+          height
+            = Math.round((image.naturalHeight / image.naturalWidth) * 100) + "%";
         }
         //  else {
         //   width =
@@ -452,17 +451,17 @@ export default {
       return new Promise((resolve, reject) => {
         const img = new Image();
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           img.src = e.target.result;
         };
-        reader.onerror = function(e) {
+        reader.onerror = function (e) {
           reject(e);
         };
         reader.readAsDataURL(file);
-        img.onload = function() {
+        img.onload = function () {
           resolve(img);
         };
-        img.onerror = function(e) {
+        img.onerror = function (e) {
           reject(e);
         };
       });

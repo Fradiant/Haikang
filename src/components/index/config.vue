@@ -1,7 +1,7 @@
 <template>
   <div class="teamInfoPages">
     <el-scrollbar style="height: 100%">
-      <el-table :data="tableData" border row-key="id" align="left">
+      <el-table :data="tableData" border row-key="address" align="left">
         <el-table-column
           v-for="(item, index) in col"
           :key="`col_${index}`"
@@ -10,9 +10,9 @@
         >
         </el-table-column>
       </el-table>
-      <pre style="text-align: left">
+      <!-- <pre style="text-align: left">
         {{ dropCol }}
-      </pre>
+      </pre> -->
       <hr />
       <pre style="text-align: left">
         {{ tableData }}

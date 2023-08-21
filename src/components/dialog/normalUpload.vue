@@ -5,7 +5,6 @@
       v-bind="$attrs"
       size="500px"
       :custom-class="'drawerClass'"
-      v-dialogDrag:isDraggable="true"
       :append-to-body="true"
       :modal-append-to-body="false"
       :wrapperClosable="false"
@@ -106,10 +105,10 @@ export default {
             pictureName: imgName,
             pictureSize: imgSize,
             pictureBase64Code:
-              "data:image/jpeg;base64," +
-              imgBase64.replace("data:image/jpeg;base64,", "")
+              "data:image/jpeg;base64,"
+              + imgBase64.replace("data:image/jpeg;base64,", "")
           }; // 图片基本信息
-          that.handleFileObj(fileObj, imgdata); //压缩图片
+          that.handleFileObj(fileObj, imgdata); // 压缩图片
         };
         r.readAsDataURL(fileObj);
       }
@@ -139,7 +138,7 @@ export default {
       // canvas重新绘制图片
       context.drawImage(image, 0, 0, targetWidth, targetHeight);
       if (fileSize) {
-        image.src = canvas.toDataURL(fileObj["type"], 0.94);
+        image.src = canvas.toDataURL(fileObj.type, 0.94);
       }
       imgdata.pictureBase64Code = image.src; // 将压缩后的base64返回
       image.addEventListener("load", () => {
@@ -156,8 +155,8 @@ export default {
         let height = "100%";
         let width = "100%";
         if (image.naturalWidth / image.naturalHeight >= 1) {
-          height =
-            Math.round((image.naturalHeight / image.naturalWidth) * 100) + "%";
+          height
+            = Math.round((image.naturalHeight / image.naturalWidth) * 100) + "%";
         }
         //  else {
         //   width =

@@ -4,7 +4,8 @@ import router from "./router";
 import axios from "axios";
 import ElementUI from "element-ui";
 import resetMessage from "./utils/message"; // 重写message弹提示
-import "../static/font/iconfont.css"
+import Validate from './utils/element-validate';
+import "../static/font/iconfont.css";
 import "element-ui/lib/theme-chalk/index.css";
 import "./assets/css/global.css";
 import "./assets/css/element.css";
@@ -24,7 +25,7 @@ Vue.use(ElementUI);
 // Vue.use(Directives);
 // Vue.use(axios);
 Vue.prototype.$message = resetMessage; // 一定要放在 Vue.use(ElementUI) 后面，因为是重写，要覆盖
-
+Vue.prototype.$Validate = Validate;
 new Vue({
   el: "#app",
   router,
