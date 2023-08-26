@@ -36,17 +36,17 @@ export default {
     return {
       myLinkList: [
         {
-          to: "/Index/system/role",
+          to: "/Index/basic/formManagement",
           imgUrl: require("../../assets/logo/1.png"),
           title: "表单"
         },
         {
-          to: "/Index/system/authority",
+          to: "/Index/basic/authority",
           imgUrl: require("../../assets/logo/2.png"),
           title: "动画"
         },
         {
-          to: "/Index/system/user",
+          to: "/Index/basic/user",
           imgUrl: require("../../assets/logo/3.png"),
           title: "弹框"
         },

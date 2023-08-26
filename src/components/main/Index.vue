@@ -49,7 +49,7 @@ export default {
     },
     changePath(val) {
       if (val) {
-        const path = '/Index/system/role';
+        const path = '/Index/basic/role';
         this.$router.push({ path });
       }
     }

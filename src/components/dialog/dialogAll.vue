@@ -270,14 +270,16 @@ export default {
   methods: {
     onOpen() { },
     onClose() {
-      this.$refs["elForm"].resetFields();
+      this.$refs.elForm.resetFields();
     },
     close() {
       this.$emit("update:visible", false);
     },
     handelConfirm() {
-      this.$refs["elForm"].validate(valid => {
-        if (!valid) return;
+      this.$refs.elForm.validate(valid => {
+        if (!valid) {
+          return;
+        }
         this.close();
       });
     },

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div class="" v-for="(item, index) in formList" :key="index">
+    <h3>手动触发el-select验证</h3>
+    <div
+      class=""
+      v-for="(item, index) in formList"
+      :key="index"
+      style="width: 500px;"
+    >
       <el-form
         ref="ruleForm"
         :model="item.ruleForm"
@@ -8,7 +14,11 @@
         class="demo-ruleForm"
       >
         <el-form-item label="活动名称" prop="name" :rules="validateForm">
-          <el-input v-model="item.ruleForm.name" @input="onInput('ruleForm',index)"></el-input>
+          <el-input
+            v-emoji
+            v-model="item.ruleForm.name"
+            @input="onInput('ruleForm', index)"
+          ></el-input>
         </el-form-item>
         <el-form-item label="活动名称" prop="region" :rules="validateForm">
           <el-select
@@ -37,6 +47,12 @@ export default {
         required: true
       }),
       formList: [
+        {
+          ruleForm: {
+            name: "",
+            region: ""
+          }
+        },
         {
           ruleForm: {
             name: "",

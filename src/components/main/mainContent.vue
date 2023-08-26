@@ -74,129 +74,129 @@
   </div>
 </template>
 <script>
-  export default {
-    name: "mainContent",
-    data () {
-      return {
-        isCollapse: false,
-        transitionName: "",
-        isRefresh: true,
-        menuData: [
-          {
-            name: "基础应用",
-            icon: "el-icon-menu",
-            children: [
-              {
-                name: "表单管理",
-                path: "/Index/system/role"
-              },
-              {
-                name: "动画演示",
-                path: "/Index/system/authority"
-              },
-              {
-                name: "弹框管理",
-                path: "/Index/system/user"
-              }
-            ]
-          },
-          {
-            name: "测试应用",
-            icon: "el-icon-setting",
-            children: [
-              {
-                name: "低代码1",
-                path: "/Index/index"
-              },
-              {
-                name: "低代码2",
-                path: "/Index/index2"
-              }
-            ]
-          },
-          {
-            name: "组件测试",
-            icon: "el-icon-setting",
-            children: [
-              {
-                name: "组件测试1",
-                path: "/Index/element"
-              },
-            ]
-          },
-          {
-            name: "组件封装",
-            icon: "el-icon-setting",
-            children: [
-              {
-                name: "表格",
-                path: "/Index/Table"
-              },
-              {
-                name: "卡片",
-                path: "/Index/Card"
-              },
-            ]
-          },
-          {
-            name: "滚动条",
-            path: "/Index/person",
-            icon: "el-icon-document"
-          },
-          {
-            name: "设置",
-            path: "/Index/config",
-            icon: "el-icon-setting"
-          }
-        ]
-      };
-    },
-    computed: {
-      pathList: function () {
-        let List = this.$store.state.routeHistory;
-        if (
-          List[1].path.indexOf(List[0].path) !== -1 &&
-          List[0].name !== "Index"
-        ) {
-          console.log(List);
-          return List;
+export default {
+  name: "mainContent",
+  data() {
+    return {
+      isCollapse: false,
+      transitionName: "",
+      isRefresh: true,
+      menuData: [
+        {
+          name: "基础应用",
+          icon: "el-icon-menu",
+          children: [
+            {
+              name: "表单管理",
+              path: "/Index/basic/formManagement"
+            },
+            {
+              name: "动画演示",
+              path: "/Index/basic/authority"
+            },
+            {
+              name: "弹框管理",
+              path: "/Index/basic/user"
+            }
+          ]
+        },
+        {
+          name: "测试应用",
+          icon: "el-icon-setting",
+          children: [
+            {
+              name: "低代码1",
+              path: "/Index/index"
+            },
+            {
+              name: "低代码2",
+              path: "/Index/index2"
+            }
+          ]
+        },
+        {
+          name: "组件测试",
+          icon: "el-icon-setting",
+          children: [
+            {
+              name: "组件测试1",
+              path: "/Index/element"
+            },
+          ]
+        },
+        {
+          name: "组件封装",
+          icon: "el-icon-setting",
+          children: [
+            {
+              name: "表格",
+              path: "/Index/Table"
+            },
+            {
+              name: "卡片",
+              path: "/Index/Card"
+            },
+          ]
+        },
+        {
+          name: "滚动条",
+          path: "/Index/person",
+          icon: "el-icon-document"
+        },
+        {
+          name: "设置",
+          path: "/Index/config",
+          icon: "el-icon-setting"
         }
-        console.log(List[1]);
-
-        return [List[1]];
+      ]
+    };
+  },
+  computed: {
+    pathList: function () {
+      let List = this.$store.state.routeHistory;
+      if (
+        List[1].path.indexOf(List[0].path) !== -1
+          && List[0].name !== "Index"
+      ) {
+        console.log(List);
+        return List;
       }
-    },
-    watch: {
-      isCollapse (newVal) {
-        this.$emit("input-value-update", newVal);
-      },
-      // 使用watch 监听$router的变化
-      $route (to, from) {
-        this.isRefresh = false;
-        setTimeout(() => {
-          this.isRefresh = true;
-        }, 500);
+      console.log(List[1]);
 
-        // 如果to索引大于from索引,判断为前进状态,反之则为后退状态
-        if (to.meta.index > from.meta.index) {
-          // 设置动画名称
-          this.transitionName = "slide-left";
-        } else {
-          this.transitionName = "slide-right";
-        }
-      }
-    },
-    methods: {
-      // 父组件获取数据
-      getVal () {
-        return this.isCollapse;
-      },
-      handleOpen (key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose () { }
+      return [List[1]];
     }
-  };
+  },
+  watch: {
+    isCollapse(newVal) {
+      this.$emit("input-value-update", newVal);
+    },
+    // 使用watch 监听$router的变化
+    $route(to, from) {
+      this.isRefresh = false;
+      setTimeout(() => {
+        this.isRefresh = true;
+      }, 500);
+
+      // 如果to索引大于from索引,判断为前进状态,反之则为后退状态
+      if (to.meta.index > from.meta.index) {
+        // 设置动画名称
+        this.transitionName = "slide-left";
+      } else {
+        this.transitionName = "slide-right";
+      }
+    }
+  },
+  methods: {
+    // 父组件获取数据
+    getVal() {
+      return this.isCollapse;
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose() { }
+  }
+};
 </script>
 <style scoped>
   #teamManagerApp {

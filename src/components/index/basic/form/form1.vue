@@ -50,7 +50,7 @@
 </template>
 <script>
 export default {
-  name: "role",
+  name: "form1",
   data() {
     return {
       searchContent: "123",
@@ -135,7 +135,7 @@ export default {
       console.log(this.$store.state.routeHistory);
     },
     routePush() {
-      const path = "/Index/system/role/add";
+      const path = "/Index/basic/formManagement/add";
       this.$router.push({ path });
     },
     routePush2() {

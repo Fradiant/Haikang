@@ -25,23 +25,23 @@ const routes = [
     component: () => import("@/components/main/Index.vue"),
     children: [
       {
-        path: "system/role",
-        component: () => import("../components/index/system/role.vue"),
+        path: "basic/formManagement",
+        component: () => import("../components/index/basic/formManagement.vue"),
         name: "表单管理"
       },
       {
-        path: "system/role/add",
-        component: () => import("../components/index/system/roleAdd.vue"),
+        path: "basic/formManagement/add",
+        component: () => import("../components/index/basic/roleAdd.vue"),
         name: "添加"
       },
       {
-        path: "system/authority",
-        component: () => import("../components/index/system/authority.vue"),
+        path: "basic/authority",
+        component: () => import("../components/index/basic/authority.vue"),
         name: "动画演示"
       },
       {
-        path: "system/user",
-        component: () => import("../components/index/system/user.vue"),
+        path: "basic/user",
+        component: () => import("../components/index/basic/user.vue"),
         name: "弹框管理"
       },
       {
@@ -73,8 +73,7 @@ const routes = [
         path: "Card",
         component: () => import("../components/packagingComponents/Card.vue"),
         name: "组件测试"
-      }
-      ,
+      },
       {
         path: "Table",
         component: () => import("../components/packagingComponents/Table.vue"),
