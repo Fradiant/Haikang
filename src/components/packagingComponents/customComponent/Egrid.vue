@@ -741,11 +741,11 @@ export default {
         const insertCode = document.getElementsByClassName("teamInfoPages")[0];
         let parent = subChannelCode !== null ? subChannelCode : insertCode;
         parent = insertAllCodeDevice !== null ? insertAllCodeDevice : parent;
-        const height
-          = parent.offsetHeight
-          - (this.showPagination ? paginationBlock.offsetHeight : 0)
-          - 52
-          - EgridDiv.offsetTop;
+        const height =
+          parent.offsetHeight -
+          (this.showPagination ? paginationBlock.offsetHeight : 0) -
+          52 -
+          EgridDiv.offsetTop;
         console.log(parent.offsetHeight);
         this.tHeight = height; // 特殊的四级页签情况，需要再减去按钮栏高度
       });
