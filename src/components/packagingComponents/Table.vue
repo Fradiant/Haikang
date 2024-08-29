@@ -59,18 +59,22 @@ export default {
         columns: [
           {
             name: "序列",
+            sortable:true,
             prop: "pointSeq"
           },
           {
             name: "日期",
+            sortable:true,
             prop: "date"
           },
           {
             name: "姓名",
+            sortable:true,
             prop: "name"
           },
           {
             name: "地址",
+            sortable:true,
             prop: "address"
           },
           {

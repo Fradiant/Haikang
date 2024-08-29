@@ -15,6 +15,19 @@
       </div>
     </div>
     <div class="item-inline">
+      <div class="block">
+        <span class="demonstration">起始日期时刻为 12:00:00</span>
+        <el-date-picker
+          v-model="value1"
+          type="datetimerange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="['12:00:00']"
+        >
+        </el-date-picker>
+      </div>
+    </div>
+    <div class="item-inline">
       <span>选择文件：</span>
       <div class="" style="width:300px;">
         <input type="file" @input="changeFile" accept=".xls" />
@@ -55,6 +68,7 @@ export default {
     return {
       searchContent: "123",
       imgSrc: "",
+      value1: '',
       data: [
         {
           label: "一级 1",
@@ -173,6 +187,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

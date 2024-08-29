@@ -1,5 +1,7 @@
 <template>
   <div>
+    <el-time-picker v-model="selectedTime" :default-value="defaultTime"></el-time-picker>
+
     <h3>手动触发el-select验证</h3>
     <div
       class=""
@@ -43,6 +45,8 @@
 export default {
   data() {
     return {
+      selectedTime: '', // 存储用户选择的时间
+      defaultTime: this.calculateDefaultTime(), // 设置默认时间为当前时间加一分钟
       validateForm: this.$Validate({
         required: true
       }),
@@ -63,6 +67,15 @@ export default {
     };
   },
   methods: {
+    calculateDefaultTime() {
+      // 获取当前日期时间
+      let currentDate = new Date();
+
+      // 将当前日期时间增加一分钟
+      return currentDate.setMinutes(currentDate.getMinutes() + 1);
+
+      // 打印增加一分钟后的日期时间
+    },
     onInput(formName, index) {
       console.log(index);
       this.$refs.ruleForm[index].validateField(["region"]);

@@ -87,12 +87,7 @@ export default {
       const fileObj = e.target.files[0]; // 赋值文件对象
       const imgName = fileObj.name;
       const imgSize = fileObj.size;
-      if (
-        !imgName
-          .substring(imgName.lastIndexOf("."))
-          .toLowerCase()
-          .match(/.jpg/)
-      ) {
+      if (!imgName.substring(imgName.lastIndexOf(".")).toLowerCase().match(/.jpg/)) {
         document.getElementById("importHidden").value = "";
         return false;
       } // 非jpg格式，退出
@@ -114,16 +109,15 @@ export default {
       directionTrunIntoBase64(fileObj); // 文件对象转换为 base64 编码
       document.getElementById("importHidden").value = "";
     },
-    async handleFileObj(fileObj, imgdata) {
-      // 处理图片，包括base64转blob，图片压缩；
+    async handleFileObj(fileObj, imgdata) { // 处理图片，包括base64转blob，图片压缩；
       console.log(fileObj);
       const croppedBlob = this.dataURLtoBlob(imgdata.pictureBase64Code);
-      console.log(croppedBlob);
+      console.log("croppedBlob", croppedBlob);
       const croppedFile = new File([croppedBlob], "userPhoto.png", {
         type: croppedBlob.type
       });
       console.log(croppedFile, "原图"); // jpg格式的blob对象
-      const compressedImage = await this.compressAccurately(croppedFile, 200); // 图片大小小于200不压缩；
+      const compressedImage = await this.compressAccurately(croppedFile, 190); // 图片大小小于200不压缩；
       console.log(compressedImage, "压缩后的");
       this.blobToBase64(compressedImage, imgBase64 => {
         this.imgOption = [];
@@ -189,13 +183,14 @@ export default {
         ) {
           options.accuracy = 0.95;
         }
-        console.log(options);
         // 分别计算文件最大大小、目标文件大小和期望文件大小
         // 以300kb为例：分别是15360、327000、291840 【15、300、285】
         const maxFileSize = options.size * (2 - options.accuracy) * 1024;
         const targetFileSize = 1024 * options.size;
         const desiredFileSize = options.size * options.accuracy * 1024;
-
+        console.log(maxFileSize);
+        console.log(targetFileSize);
+        console.log(desiredFileSize);
         console.log(file); // 正常
         const dataURL = await that.readAsDataURL(file);
         console.log(dataURL); // 正常
@@ -242,12 +237,15 @@ export default {
             }
             break;
           }
-
+          console.log(maxFileSize);
+          console.log(compressedSize);
           if (maxFileSize < compressedSize) {
             compressedImages[1] = compressedImage;
             compressionFactor -= Math.pow(0.5, i + 1);
           } else {
-            if (!(desiredFileSize > compressedSize)) {
+            if (!(desiredFileSize > compressedSize)) { // 当前图片大小大于等于期望
+              console.log(desiredFileSize);
+              console.log(compressedSize);
               break;
             }
             compressedImages[0] = compressedImage;
@@ -329,18 +327,26 @@ export default {
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
 
+        let maxHeight = 1920; // 高度最大分辨率
+        let maxWidth = 1080; // 宽度最大分辨率
+        let scale1 = maxHeight / e.height;
+        let scale2 = maxWidth / e.width;
+        let scale3  = scale1 < scale2 ? scale1 : scale2;
+
         let targetWidth;
         let targetHeight;
-        if (scale) {
+        if (scale3) {
           // 缩放比例
-          const validScale = scale > 0 && scale < 10 ? scale : 1;
+          const validScale = scale3 > 0 && scale3 < 10 ? scale3 : 1;
           targetWidth = e.width * validScale;
           targetHeight = e.height * validScale;
         } else {
           targetWidth = width || (height * e.width) / e.height || e.width;
           targetHeight = height || (width * e.height) / e.width || e.height;
         }
-
+        console.log(targetWidth);
+        console.log(targetHeight);
+        console.log("orientation", orientation);
         switch (orientation) {
           case 3:
             canvas.height = targetHeight;
