@@ -4,10 +4,6 @@
       id="tableContainer"
       ref="egridForm"
       :model="customValiData"
-      :style="{
-        borderColor:
-          $store.state.curDataTheme === 'theme1' ? '#E1E1E1' : '#2c3237'
-      }"
       class="tableContainer"
     >
       <el-table
@@ -243,13 +239,6 @@
                   }"
                   class="el-table-color"
                 />
-                <span type="text">{{
-                  col.StatusList && col.StatusList[scope.row[col.prop]]
-                    ? $t(col.StatusList[scope.row[col.prop]].text)
-                    : scope.row[col.prop].indexOf("errCode.errCode_") > -1
-                    ? $t(scope.row[col.prop])
-                    : ""
-                }}</span>
               </div>
               <div v-if="col.patrolRoute">
                 <div
@@ -741,11 +730,11 @@ export default {
         const insertCode = document.getElementsByClassName("teamInfoPages")[0];
         let parent = subChannelCode !== null ? subChannelCode : insertCode;
         parent = insertAllCodeDevice !== null ? insertAllCodeDevice : parent;
-        const height
-          = parent.offsetHeight
-          - (this.showPagination ? paginationBlock.offsetHeight : 0)
-          - 52
-          - EgridDiv.offsetTop;
+        const height =
+          parent.offsetHeight -
+          (this.showPagination ? paginationBlock.offsetHeight : 0) -
+          52 -
+          EgridDiv.offsetTop;
         console.log(parent.offsetHeight);
         this.tHeight = height; // 特殊的四级页签情况，需要再减去按钮栏高度
       });

@@ -59,7 +59,7 @@ export default {
       captchaUrl: "",
       loginForm: {
         username: "admin",
-        password: "123456",
+        password: "alksdjgfkldfajg;la",
         code: ""
       },
       checked: true,
@@ -82,7 +82,7 @@ export default {
         if (valid) {
           if (
             this.loginForm.username === "admin" &&
-            this.loginForm.password === "123456"
+            this.loginForm.password === "alksdjgfkldfajg;la"
           ) {
             const path = "/Index";
             this.$message.success("登录成功");
