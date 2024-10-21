@@ -9,6 +9,7 @@ Vue.directive('dialogDrag', {
     } // 如果不能拖动，终止函数执行
     let dialogHeaderEl;
     let dragDom;
+    debugger;
     if (el.className === 'el-drawer__wrapper') {
       dialogHeaderEl = el.querySelector('.el-drawer__header');
       dragDom = el.querySelector('.el-drawer');
@@ -20,7 +21,6 @@ Vue.directive('dialogDrag', {
       return;
     }
     dialogHeaderEl.style.cssText += ';cursor:move;';
-
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
     const sty = (
       function () {

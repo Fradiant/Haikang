@@ -17,6 +17,7 @@ import "./utils/copy";
 import "./utils/drag";
 import VForm from "vform-builds"; // 引入VForm库
 import "vform-builds/dist/VFormDesigner.css"; // 引入VForm样式
+import imageUtils from "./utils/imageUtils";
 // import "@koala-form/fes-plugin";
 
 Vue.config.productionTip = false;
@@ -26,6 +27,7 @@ Vue.use(ElementUI);
 // Vue.use(axios);
 Vue.prototype.$message = resetMessage; // 一定要放在 Vue.use(ElementUI) 后面，因为是重写，要覆盖
 Vue.prototype.$Validate = Validate;
+Vue.prototype.imageUtils = imageUtils;
 new Vue({
   el: "#app",
   router,

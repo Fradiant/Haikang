@@ -9,9 +9,9 @@
         label-width="110px"
       >
         <el-col :span="20">
-          <el-form-item label="描述文件" prop="value">
+          <el-form-item label="描述文件" prop="timeValue">
             <el-date-picker
-              v-model="value"
+              v-model="timeValue"
               :append-to-body="false"
               :picker-options="{
                 start: '08:30',
@@ -228,7 +228,9 @@ export default {
   props: [],
   data() {
     return {
+      timeValue: "",
       formData: {
+        value: "",
         mobile: "",
         field106: undefined,
         field107: undefined,
@@ -244,7 +246,6 @@ export default {
         field129: [],
         field128: "",
         field130: null,
-        value: "",
         field131: null
       },
       rules: {
@@ -366,7 +367,9 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("1")
+  },
   methods: {
     field115BeforeUpload(file) {
       let isRightSize = file.size / 1024 / 1024 < 2;
@@ -410,9 +413,5 @@ export default {
 <style>
 .el-upload__tip {
   line-height: 1.2;
-}
-/* 隐藏表单横向滚动轴 */
-.el-scrollbar__wrap {
-  overflow-x: hidden;
 }
 </style>
