@@ -39,108 +39,110 @@
         :columns="EgridData.columns"
       ></Egrid>
     </div>
-    <dialogAll :visible.sync="dialogAll" title="某弹框"></dialogAll>
-    <dialogUpload :visible.sync="dialogUploadShow"></dialogUpload>
-    <dialogTest :visible.sync="dialogTestShow"></dialogTest>
-    <normalUpload :visible.sync="dialogNormalShow"></normalUpload>
-    <el-dialog
-      v-bind="$attrs"
-      v-on="$listeners"
-      :visible.sync="dialogForm"
-      v-if="dialogForm"
-      custom-class="formClass"
-      width="35%"
-      :close-on-click-modal="false"
-      @close="onClose"
-      title="EZLive IOS 添加"
-    >
-      <dialogForm ref="child" @close="close"> </dialogForm>
-      <div slot="footer">
-        <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="handelConfirm">确定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog
-      title="提示"
-      width="400px"
-      :visible.sync="dialogVisible"
-      :modal-append-to-body="false"
-    >
-      <dialogSelect></dialogSelect>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <!-- v-dialogDrag:isDraggable="true" -->
-    <!-- 该属性引发报错，问题原因drag自定义指令未找到对应dom -->
-    <el-drawer
-      ref="drawer"
-      size="500px"
-      :append-to-body="false"
-      :custom-class="'drawerClass'"
-      :wrapperClosable="false"
-      direction="rtl"
-      title="我嵌套了 Form !"
-      :visible.sync="dialog"
-      :modal-append-to-body="false"
-    >
-      <section class="demo-drawer__content">
-        <el-form :model="form">
-          <el-form-item
-            label="活动名称"
-            :label-width="formLabelWidth"
-            class="el-form-item from_item is-required"
-          >
-            <el-input
-              v-model="form.name"
-              autocomplete="off"
-              width="500px"
-              v-emoji
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="活动区域"
-            :label-width="formLabelWidth"
-            class="el-form-item from_item"
-          >
-          </el-form-item>
-
-          <el-form-item
-            label="上传图片"
-            :label-width="formLabelWidth"
-            class="el-form-item from_item is-required"
-          >
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-            <el-dialog :visible.sync="imgDialogVisible">
-              <img width="100%" :src="imageUrl" alt="" />
-            </el-dialog>
-          </el-form-item>
-        </el-form>
-        <div class="demo-drawer__footer">
-          <el-button @click="cancelForm">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="$refs.drawer.closeDrawer()"
-            :loading="loading"
-            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
-          >
+    <div class="dialog">
+      <dialogAll :visible.sync="dialogAll" title="某弹框"></dialogAll>
+      <dialogUpload :visible.sync="dialogUploadShow"></dialogUpload>
+      <dialogTest :visible.sync="dialogTestShow"></dialogTest>
+      <normalUpload :visible.sync="dialogNormalShow"></normalUpload>
+      <el-dialog
+        v-bind="$attrs"
+        v-on="$listeners"
+        :visible.sync="dialogForm"
+        v-if="dialogForm"
+        custom-class="formClass"
+        width="35%"
+        :close-on-click-modal="false"
+        @close="onClose"
+        title="EZLive IOS 添加"
+      >
+        <dialogForm ref="child" @close="close"> </dialogForm>
+        <div slot="footer">
+          <el-button @click="close">取消</el-button>
+          <el-button type="primary" @click="handelConfirm">确定</el-button>
         </div>
-      </section>
-    </el-drawer>
+      </el-dialog>
+      <el-dialog
+        title="提示"
+        width="600px"
+        :visible.sync="dialogVisible"
+        :modal-append-to-body="false"
+      >
+        <dialogSelect></dialogSelect>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <!-- v-dialogDrag:isDraggable="true" -->
+      <!-- 该属性引发报错，问题原因drag自定义指令未找到对应dom -->
+      <el-drawer
+        ref="drawer"
+        size="500px"
+        :append-to-body="false"
+        :custom-class="'drawerClass'"
+        :wrapperClosable="false"
+        direction="rtl"
+        title="我嵌套了 Form !"
+        :visible.sync="dialog"
+        :modal-append-to-body="false"
+      >
+        <section class="demo-drawer__content">
+          <el-form :model="form">
+            <el-form-item
+              label="活动名称"
+              :label-width="formLabelWidth"
+              class="el-form-item from_item is-required"
+            >
+              <el-input
+                v-model="form.name"
+                autocomplete="off"
+                width="500px"
+                v-emoji
+              ></el-input>
+            </el-form-item>
+            <el-form-item
+              label="活动区域"
+              :label-width="formLabelWidth"
+              class="el-form-item from_item"
+            >
+            </el-form-item>
+
+            <el-form-item
+              label="上传图片"
+              :label-width="formLabelWidth"
+              class="el-form-item from_item is-required"
+            >
+              <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+              <el-dialog :visible.sync="imgDialogVisible">
+                <img width="100%" :src="imageUrl" alt="" />
+              </el-dialog>
+            </el-form-item>
+          </el-form>
+          <div class="demo-drawer__footer">
+            <el-button @click="cancelForm">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="$refs.drawer.closeDrawer()"
+              :loading="loading"
+              >{{ loading ? "提交中 ..." : "确 定" }}</el-button
+            >
+          </div>
+        </section>
+      </el-drawer>
+    </div>
   </div>
 </template>
 <script>
@@ -161,7 +163,7 @@ export default {
     dialogUpload,
     normalUpload,
     dialogSelect,
-    Egrid
+    Egrid,
   },
   data() {
     return {
@@ -183,7 +185,7 @@ export default {
         delivery: false,
         type: [],
         resource: "",
-        desc: ""
+        desc: "",
       },
       formLabelWidth: "80px",
       timer: null,
@@ -199,57 +201,57 @@ export default {
             sortable: true,
             prop: "visitorName",
             "min-width": 140,
-            formatter: this.visitornamevalue
+            formatter: this.visitornamevalue,
           },
           {
             name: "email",
             sortable: true,
             "min-width": 140,
-            prop: "email"
+            prop: "email",
           },
           {
             name: "identityNo",
             sortable: true,
             "min-width": 140,
-            prop: "identityNo"
+            prop: "identityNo",
           },
           {
             name: "integratedCircuitNo",
             sortable: true,
             "min-width": 140,
-            prop: "integratedCircuitNo"
+            prop: "integratedCircuitNo",
           },
           {
             name: "visitorType",
             sortable: true,
             "min-width": 140,
-            prop: "visitorType"
+            prop: "visitorType",
             // formatter: this.visitorTypeFormatter
           },
           {
             name: "receptionistName",
             sortable: true,
             "min-width": 140,
-            prop: "receptionistName"
+            prop: "receptionistName",
           },
           {
             name: "receptionistPhone",
             sortable: true,
             "min-width": 140,
-            prop: "receptionistPhone"
+            prop: "receptionistPhone",
           },
           {
             name: "signInTime",
             sortable: true,
             "min-width": 140,
-            prop: "signInTime"
+            prop: "signInTime",
             // formatter: this.utils.signInFormatter
           },
           {
             name: "status",
             sortable: true,
             "min-width": 140,
-            prop: "status"
+            prop: "status",
             // formatter: this.statusFormatter
           },
           {
@@ -257,7 +259,7 @@ export default {
             prop: "personFeatureStatus",
             sortable: true,
             StatusButton: true,
-            "min-width": 140
+            "min-width": 140,
             // StatusList: this.ComScript.featureStatus
           },
           {
@@ -276,8 +278,8 @@ export default {
                       return "";
                     }
                     return "invisible";
-                  }
-                }
+                  },
+                },
               },
               {
                 classname: "u-icon-edit",
@@ -289,8 +291,8 @@ export default {
                       return "";
                     }
                     return "invisible";
-                  }
-                }
+                  },
+                },
               },
               {
                 classname: "u-icon-del",
@@ -302,8 +304,8 @@ export default {
                       return "";
                     }
                     return "invisible";
-                  }
-                }
+                  },
+                },
               },
               {
                 classname: "icon-chakanxiangqing iconfont",
@@ -315,13 +317,13 @@ export default {
                       return "";
                     }
                     return "invisible";
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      }
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
     };
   },
   created() {
@@ -338,7 +340,7 @@ export default {
   methods: {
     startObserving() {
       const targetNode = document.getElementById("visitorRegistration");
-      this.observer = new MutationObserver(mutationsList => {
+      this.observer = new MutationObserver((mutationsList) => {
         console.log("DOM 变动检测到：", mutationsList);
       });
       this.observer.observe(targetNode, { childList: true, subtree: true });
@@ -364,54 +366,54 @@ export default {
                 {
                   optionId: "33",
                   optionValue:
-                    "123456789012345678901234567890123456789012345678901234567890"
+                    "123456789012345678901234567890123456789012345678901234567890",
                 },
                 {
                   optionId: "65",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678901"
+                    "1234567890123456789012345678901234567890123456789012345678901",
                 },
                 {
                   optionId: "66",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678902"
+                    "1234567890123456789012345678901234567890123456789012345678902",
                 },
                 {
                   optionId: "67",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678903"
+                    "1234567890123456789012345678901234567890123456789012345678903",
                 },
                 {
                   optionId: "68",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678904"
+                    "1234567890123456789012345678901234567890123456789012345678904",
                 },
                 {
                   optionId: "69",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678905"
+                    "1234567890123456789012345678901234567890123456789012345678905",
                 },
                 {
                   optionId: "70",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678906"
+                    "1234567890123456789012345678901234567890123456789012345678906",
                 },
                 {
                   optionId: "71",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678907"
+                    "1234567890123456789012345678901234567890123456789012345678907",
                 },
                 {
                   optionId: "72",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678908"
+                    "1234567890123456789012345678901234567890123456789012345678908",
                 },
                 {
                   optionId: "73",
                   optionValue:
-                    "1234567890123456789012345678901234567890123456789012345678909"
-                }
-              ]
+                    "1234567890123456789012345678901234567890123456789012345678909",
+                },
+              ],
             },
             {
               fieldId: "73",
@@ -423,22 +425,22 @@ export default {
                 {
                   optionId: "33",
                   optionValue:
-                    "123456789012345678901234567890123456789012345678901234567890"
-                }
-              ]
-            }
-          ]
-        }
+                    "123456789012345678901234567890123456789012345678901234567890",
+                },
+              ],
+            },
+          ],
+        },
       };
       this.allCustomList = response.data.fieldList || [];
       this.customFlag = this.allCustomList.length ? true : false;
       this.EgridData.columns = [...this.columnsBak]; // 将表头恢复成初始状态
-      this.allCustomList.forEach(item => {
+      this.allCustomList.forEach((item) => {
         this.EgridData.columns.splice(this.EgridData.columns.length - 1, 0, {
           name: item.fieldName,
           prop: item.fieldId,
           "min-width": 140,
-          sortable: true
+          sortable: true,
         });
       });
     },
@@ -448,15 +450,15 @@ export default {
       response = {
         data: {
           total: 1,
-          visitorList: []
-        }
+          visitorList: [],
+        },
       };
       that.tableData = response.data.visitorList || [];
       that.itemTotal = that.tableData.length;
-      that.tableData.forEach(item => {
+      that.tableData.forEach((item) => {
         if (item.customFieldList && item.customFieldList.length) {
           // 如果有自定义属性
-          item.customFieldList.forEach(customItem => {
+          item.customFieldList.forEach((customItem) => {
             item[customItem.fieldId] = customItem.fieldValue;
           });
         }
@@ -509,7 +511,7 @@ export default {
     createTable(dataList) {
       this.EgridData.data = [];
       if (dataList.length > 0) {
-        dataList.forEach(item => {
+        dataList.forEach((item) => {
           item.signInTime = item.visitorInfo.signInTime
             ? item.visitorInfo.signInTime
             : "";
@@ -521,7 +523,7 @@ export default {
           item.visitorType = item.visitorInfo.visitorType;
           item.status = item.visitorInfo.visitorState;
           if (item.identificationList && item.identificationList.length) {
-            item.identificationList.forEach(item1 => {
+            item.identificationList.forEach((item1) => {
               if (item1.identityType === 2 || item1.identityType === 6) {
                 item.integratedCircuitNo = item1.identityNo;
                 item.cardPassword = item1.cardPassword;
@@ -536,7 +538,7 @@ export default {
           }
           if (this.$store.state.isStateChange === "SW") {
             if (item.customFieldList && item.customFieldList.length) {
-              item.customFieldList.forEach(item1 => {
+              item.customFieldList.forEach((item1) => {
                 item[item1.fieldId] = item1.fieldValue; // 字符串形式展示，可直接赋值
               });
             }
@@ -544,8 +546,8 @@ export default {
         });
       }
       this.EgridData.data = dataList;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -576,7 +578,7 @@ export default {
   top: 0px !important;
   background-color: #f8f9fa !important;
 }
->>> .formClass {
+.dialog >>> .formClass {
   min-width: 400px;
 }
 
